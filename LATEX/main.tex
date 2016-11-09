@@ -1,0 +1,209 @@
+\documentclass[letterpaper,10pt,compsoc,draftclsnofoot,onecolumn]{IEEEtran}
+
+\setcounter{tocdepth}{3}
+
+\usepackage[margin=0.75in]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage[singlespacing]{setspace}
+
+\usepackage{cite}
+\usepackage{color}
+\usepackage{pgfgantt}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{pdflscape}
+\usepackage{xparse}
+
+\makeindex
+
+\newcounter{myWeekNum}
+\stepcounter{myWeekNum}
+\newcommand{\myWeek}{\themyWeekNum
+    \stepcounter{myWeekNum}
+    \ifnum\themyWeekNum=53
+         \setcounter{myWeekNum}{1}
+    \else\fi
+}
+
+\usepackage{hyperref}
+
+\hypersetup{
+	colorlinks = true,
+	urlcolor = black,
+	pdfauthor = {AUTHOR},
+	pdfkeywords = {KEYWORDS},
+	pdftitle = {TITLE},
+	pdfsubject = {SUBJECT},
+	pdfpagemode = UseNone
+}
+
+\begin{document}
+\begin{titlepage}
+\begin{minipage}{1.0\textwidth}
+\centering
+\textbf{Author:}\\
+Name \\
+Organization \\
+Email
+\end{minipage}
+\vfill
+\begin{minipage}{1.0\textwidth}
+\centering
+\fontfamily{phv}\fontsize{36pt}{36pt}\fontseries{bx}\selectfont 
+Project --- Software Requirements Specification
+\end{minipage}
+\vfill
+\begin{minipage}{0.5\textwidth}
+\flushleft
+\textbf{Administrator:}\\
+Name \\
+Email
+\end{minipage}
+%
+\begin{minipage}{0.5\textwidth}
+\flushright
+\textbf{Sponsor:}\\
+Name \\
+Company \\
+Email
+\end{minipage}
+\vfill
+\begin{abstract}
+undefined
+\end{abstract}
+\end{titlepage}
+
+\pagenumbering{Roman}
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+\pagenumbering{arabic}
+
+\section{Introduction}
+\subsection{Purpose}
+undefined
+
+\subsection{Scope}
+undefined
+
+\subsection{Definitions, Acronyms, and Abbreviations}
+\begin{description}[\IEEEsetlabelwidth{ISAC}]
+\item[TBD] To Be Determined
+\end{description}
+
+\subsection{References}
+\nocite{Article}
+\nocite{Electronic}
+\nocite{Standard}
+\begingroup
+\renewcommand{\addcontentsline}[3][]{}
+\renewcommand\refname{}
+\renewcommand{\section}[2]{}%
+\bibliographystyle{IEEEtran}
+\bibliography{main.bib}
+\endgroup
+
+\subsection{Overview}
+undefined
+
+\section{Overall Description}
+\subsection{Product Perspective}
+undefined
+
+\subsubsection{System Interfaces}
+undefined
+
+\subsubsection{User Interfaces}
+undefined
+
+\subsubsection{Hardware Interfaces}
+undefined
+
+\subsubsection{Software Interfaces}
+undefined
+
+\subsubsection{Communications Interfaces}
+undefined
+
+\subsubsection{Memory constraints}
+undefined
+
+\subsubsection{Operations}
+undefined
+
+\subsubsection{Site Adaptation Requirements}
+undefined
+
+\subsection{Product Functions}
+undefined
+
+\subsection{User Characteristics}
+undefined
+
+\subsection{Constraints}
+undefined
+
+\subsection{Assumptions and Dependencies}
+undefined
+
+\subsection{Apportioning of Requirements}
+undefined
+
+\section{Specific Requirements}
+undefined
+
+\subsection{External Interfaces}
+undefined
+
+\subsection{Functional Requirements}
+\DeclareDocumentCommand
+\subsubreq { m O{NO\_TRACE} O{1.0} } { 
+\subsubsection[#1]{#1 \hspace{30pt} \normalfont [\textsc{\MakeLowercase{#2}}, version #3]} 
+}
+
+\subsubreq{Target}[Type]
+undefined\cite{Electronic}
+
+\subsubsection{Standards Compliance}
+undefined
+
+\subsection{Software System Attributes}
+\subsubsection{Reliability}
+undefined
+
+\subsubsection{Availability}
+undefined
+
+\subsubsection{Security}
+undefined
+
+\subsubsection{Maintainability}
+undefined
+
+\subsubsection{Portability}
+undefined
+
+\clearpage
+\pagenumbering{Roman}
+\appendices
+\begin{landscape}
+\section{Schedule Table}
+\end{landscape}
+
+\begin{landscape}
+\section{Gantt Chart}
+\begin{ganttchart}{1}{12}
+\gantttitle{2016}{12} \\
+\gantttitlelist{1,...,12}{1} \\
+\ganttgroup[progress=50]{Group}{1}{10} \\
+\ganttbar{Task 1}{1}{2} \\
+\ganttlinkedbar{Task 2}{3}{10} \ganttnewline
+\ganttmilestone{Milestone}{10} \ganttnewline
+\ganttbar{Final Task}{8}{12}
+\ganttlink{elem2}{elem3}
+\ganttlink{elem3}{elem4}
+\end{ganttchart}
+\end{landscape}
+\end{document}
