@@ -1,0 +1,720 @@
+Solution for HW4
+CS 480 Winter 2016
+Oregon State University
+
+1. (2 pts) For this grammar: 
+       E -> E - E | E ^ E | int
+   (a) Generate LR(1) DFA and action table;
+   (b) Explain shift-reduce / reduce-reduce conflicts;
+   (c) How to prefer left-associativity for -, right-associativity for ^, and ^ over - in precedence?
+       (e.g., 2-3-4-5^6^7 means ((2-3)-4)-(5^(6^7)), as in mathematics).
+       Hint: selectively remove some entries in the action table, so that 
+             each cell has at most one action. See problem 0(c) above.
+       
+   (d) Show that LR(0) and SLR(1) would have identical DFAs as the LR(1) one.
+       Hint: no need to redo the LR(0) or SLR(1) DFA/tables.
+       You simply need to make observations from the LR(1) DFA, 
+       and you need to show compute FOLLOW sets. Hint: it's easy to see FOLLOW(E) = {-, ^, $}.
+
+       Note: the action table for LR(0) might be different from those for LR(1) or SLR(1), 
+             since a reduce action does _not_ depend on the lookahead in LR(0).
+
+   (e) In terms of error detection, is there any difference between LR(1) and LR(0)?
+       Consider the four ungrammatical inputs used in problem 0 (plus one more: int - int int).
+       Which states in LR(1) will report error? Which states in LR(0)? What about SLR(1)?
+
+Solution. 
+(a) LR(1) DFA:
+
+rules:
+(1) E -> E - E
+(2) E -> E ^ E
+(3) E -> int
+
+state 0
+S -> .E $
+E -> .E-E $/-/^
+E -> .E^E $/-/^
+E -> .int $/-/^
+
+int => shift, go to state 1
+E => go to state 2
+
+state 1
+E -> int. $/-/^
+
+$/-/^ => reduce using rule 3: E -> int
+
+state 2
+S -> E. $
+E -> E.-E $/-/^
+E -> E.^E $/-/^
+
+$ => accept
+- => shift, go to state 3
+^ => shift, go to state 4
+
+state 3
+E -> E-.E $/-/^
+E -> .E-E $/-/^
+E -> .E^E $/-/^
+E -> .int $/-/^
+
+int => shift, go to state 1
+E => go to state 5
+
+state 4
+E -> E^.E $/-/^
+E -> .E-E $/-/^
+E -> .E^E $/-/^
+E -> .int $/-/^
+
+int => shift, go to state 1
+E => go to state 6
+
+state 5
+E -> E-E. $/-/^
+E -> E.-E $/-/^
+E -> E.^E $/-/^
+
+$/-/^ => reduce using rule 1: E -> E-E
+- => shift, go to state 3
+^ => shift, go to state 4
+
+state 6
+E -> E^E. $/-/^
+E -> E.-E $/-/^
+E -> E.^E $/-/^
+
+$/-/^ => reduce using rule 2: E -> E^E
+- => shift, go to state 3
+^ => shift, go to state 4
+
+action table:
+
+|-------+-----+-------+-------+-----+---+----|
+| state | int | -     | ^     | $   |   | E  |
+|-------+-----+-------+-------+-----+---+----|
+|     0 | s1  |       |       |     |   | g2 |
+|     1 |     | r3    | r3    | r3  |   |    |
+|     2 |     | s3    | s4    | acc |   |    |
+|     3 | s1  |       |       |     |   | g5 |
+|     4 | s1  |       |       |     |   | g6 |
+|     5 |     | r1/s3 | r1/s4 | r1  |   |    |
+|     6 |     | r2/s3 | r2/s4 | r2  |   |    |
+|-------+-----+-------+-------+-----+---+----|
+
+(b) This parser has shift-reduce conflicts only.
+When at state 5/6 and the next symbol is an operator (-/^), the parser has two choices:
+reduce by using rule E -> E op E;
+shift the new op.
+
+(c) Change the actions as below.
+
+state 0-4 same
+
+state 5
+E -> E-E. $/-
+E -> E.-E empty
+E -> E.^E ^
+$/- => reduce using rule 1: E -> E-E
+^ => shift, go to state 4
+
+state 6
+E -> E^E. $/-
+E -> E.-E empty
+E -> E.^E ^
+$/- => reduce using rule 2: E -> E^E
+^ => shift, go to state 4
+
+|-------+-----+-------+-------+-----+---+----|
+| state | int | -     | ^     | $   |   | E  |
+|-------+-----+-------+-------+-----+---+----|
+|     0 | s1  |       |       |     |   | g2 |
+|     1 |     | r3    | r3    | r3  |   |    |
+|     2 |     | s3    | s4    | acc |   |    |
+|     3 | s1  |       |       |     |   | g5 |
+|     4 | s1  |       |       |     |   | g6 |
+|     5 |     | r1    | s4    | r1  |   |    |
+|     6 |     | r2    | s4    | r2  |   |    |
+|-------+-----+-------+-------+-----+---+----|
+
+(d) For the DFA in answer 1(a), all look-ahead symbols could be $/-/^ for E and $ for S, while
+follow(E) = {$,-,^}, follow(S) = {$}. 
+
+Thus, SLR(1) and LR(0) parser are always in the same situation (have same choices in every state/next symbol pair).
+
+
+2. (1 pt)
+   (a) Write an equivalent but unambiguous grammar (with the same preferences as in (c)).
+   (b) Generate LR(1) DFA and action table for the new grammar.
+   (c) Is there any conflict? Why? How were the preferences in (c) implemented by the new DFA?
+
+   (d) Compute the FOLLOW sets. Would the SLR(1) table here be simpler than the LR(1) one?
+
+Solution.
+(a)
+E (start symbol) -> E - T | T
+T -> F ^ T | F
+F -> int
+
+It is unambiguous supported by a 2-level inductive proof.
+
+(b) LR(1) DFA:
+
+rules:
+(1) E -> E - T
+(2) E -> T
+(3) T -> F ^ T
+(4) T -> F
+(5) F -> int
+
+state 0
+S -> .E $
+E -> .E-T $/-
+E -> .T $/-
+T -> .F^T $/-
+T -> .F $/-
+F -> .int $/-/^
+
+int => shift, go to state 1
+F => go to state 2
+T => go to state 3
+E => go to state 4
+
+state 1
+F -> int. $/-/^
+
+$/-/^ => reduce using rule 5: F -> int
+
+state 2
+T -> F.^T $/-
+T -> F. $/-
+
+^ => shift and go to state 5
+$/- => reduce using rule 4: T -> F
+
+state 3
+E -> T. $/-
+
+$/- => reduce using rule 2: E -> T
+
+state 4
+S -> E. $
+E -> E.-T $/-
+
+$ => acc
+- => shift and go to state 6
+
+state 5
+T -> F^.T $/-
+T -> .F^T $/-
+T -> .F $/-
+F -> .int $/-/^
+
+T => go to state 7
+F => go to state 2
+int => shift, go to state 1
+
+state 6
+E -> E-.T $/-
+T -> .F^T $/-
+T -> .F $/-
+F -> .int $/-/^
+
+T => go to state 8
+F => go to state 2
+int => shift, go to state 1
+
+state 7
+T -> F^T. $/-
+
+$/- => reduce using rule 3: T -> F ^ T
+
+state 8
+E -> E-T. $/-
+
+$/- => reduce using rule 1: E -> E - T
+
+action table:
+
+|-------+-----+----+----+-----+---+----+----+----|
+| state | int | -  | ^  | $   |   | F  | T  | E  |
+|-------+-----+----+----+-----+---+----+----+----|
+|     0 | s1  |    |    |     |   | g2 | g3 | g4 |
+|     1 |     | r5 | r5 | r5  |   |    |    |    |
+|     2 |     | r4 | s5 | r4  |   |    |    |    |
+|     3 |     | r2 |    | r2  |   |    |    |    |
+|     4 |     | s6 |    | acc |   |    |    |    |
+|     5 | s1  |    |    |     |   | g2 | g7 |    |
+|     6 | s1  |    |    |     |   | g2 | g8 |    |
+|     7 |     | r3 |    | r3  |   |    |    |    |
+|     8 |     | r1 |    | r1  |   |    |    |    |
+|-------+-----+----+----+-----+---+----+----+----|
+
+(c) No conflict. Because the grammar itself describes the preferences.
+
+The new DFA would 
+prefer reduce for X-X.-;
+prefer shift for X-X.^/X^X.^X;
+prefer reduce for X^X.-.
+
+(d)
+
+follow(S) = {$}
+follow(E) = {-,$}
+follow(T) = {-,$}
+follow(F) = {-,^,$}
+
+3. (1 pt) For this grammar:
+
+       S -> Aa | Bb | ac 
+       A -> a
+       B -> a
+   
+   (a) Generate the LR(0) DFA.
+   (b) Explain the shift-reduce and reduce-reduce conflicts.
+   (c) Compute the FOLLOW sets.
+   (d) Show that SLR(1) has no conflict, and draw the action table.
+
+   This example shows that SLR(1) is more powerful than LR(0).
+
+Solution.
+(a) LR(0) DFA
+
+rules:
+(1) S -> A a
+(2) S -> B b
+(3) S -> a c
+(4) A -> a
+(5) B -> a
+
+state 0
+S' -> .S
+S -> .Aa
+S -> .Bb
+S -> .ac
+A -> .a
+B -> .a
+
+S => go to state 1
+A => go to state 2
+B => go to state 3
+a => shift, go to state 4
+
+state 1
+S' -> S.
+
+acc
+
+state 2
+S -> A.a
+
+a => shift, go to state 5
+
+state 3
+S -> B.b
+
+b => shift, go to state 6
+
+state 4
+S -> a.c
+A -> a.
+B -> a.
+
+reduce using rule (4)(5)
+c => shift, go to state 7
+
+state 5
+S -> Aa.
+
+reduce using rule (1)
+
+state 6
+S -> Bb.
+
+reduce using rule (2)
+
+state 7
+S -> ac.
+
+reduce using rule (3)
+
+action table
+
+|-------+-------+-------+----------+-------+---+----+----+----|
+| state | a     | b     | c        | $     |   | S  | A  | B  |
+|-------+-------+-------+----------+-------+---+----+----+----|
+|     0 | s4    |       |          |       |   | g1 | g2 | g3 |
+|     1 |       |       |          | acc   |   |    |    |    |
+|     2 | s5    |       |          |       |   |    |    |    |
+|     3 |       | s6    |          |       |   |    |    |    |
+|     4 | r4/r5 | r4/r5 | r4/r5/s7 | r4/r5 |   |    |    |    |
+|     5 | r1    | r1    | r1       | r1    |   |    |    |    |
+|     6 | r2    | r2    | r2       | r2    |   |    |    |    |
+|     7 | r3    | r3    | r3       | r3    |   |    |    |    |
+|-------+-------+-------+----------+-------+---+----+----+----|
+
+(b)
+In state 4, (after shift a symbol "a"), there are always reduce/reduce conflict 
+since the parser does not know using rule (4) or (5) to reduce.
+If the next input symbol is "c", there is also shift/reduce conflict since "c" might
+be shift according to the rule (3).
+
+(c)
+follow(S') = {$}
+follow(S) = {$}
+follow(A) = {a}
+follow(B) = {b}
+
+(d) SLR(1) has no conflict since follow set is used.
+
+action table
+|-------+-------+-------+----------+-------+---+----+----+----|
+| state | a     | b     | c        | $     |   | S  | A  | B  |
+|-------+-------+-------+----------+-------+---+----+----+----|
+|     0 | s4    |       |          |       |   | g1 | g2 | g3 |
+|     1 |       |       |          | acc   |   |    |    |    |
+|     2 | s5    |       |          |       |   |    |    |    |
+|     3 |       | s6    |          |       |   |    |    |    |
+|     4 | r4    | r5    | s7       |       |   |    |    |    |
+|     5 | r1    | r1    | r1       | r1    |   |    |    |    |
+|     6 | r2    | r2    | r2       | r2    |   |    |    |    |
+|     7 | r3    | r3    | r3       | r3    |   |    |    |    |
+|-------+-------+-------+----------+-------+---+----+----+----|
+
+
+4. (1 pt) For this grammar:
+
+       S -> Aa | Bb | bAb 
+       A -> a
+       B -> a
+   
+   (a) Generate the LR(0) DFA.
+   (b) Compute the FOLLOW sets, and show that SLR(1) still has conflict.
+   (c) Generate the LR(1) DFA and action table.
+   (d) Explain why LR(1) has no conflict (while SLR(1) does).
+
+   This example shows that LR(1) is more powerful than SLR(1).
+
+Solution.
+(a) LR(0) DFA
+
+rules:
+(1) S -> A a
+(2) S -> B b
+(3) S -> b A b
+(4) A -> a
+(5) B -> a
+
+state 0
+S' -> .S
+S -> .Aa
+S -> .Bb
+S -> .bAb
+A -> .a
+B -> .a
+
+S => go to state 1
+A => go to state 2
+B => go to state 3
+b => shift, go to state 4
+a => shift, go to state 5
+
+state 1
+S' -> S.
+
+accept
+
+state 2
+S -> A.a
+
+a => shift, go to state 6
+
+state 3
+S -> B.b
+
+b => shift, go to state 7
+
+state 4
+S -> b.Ab
+A -> .a
+
+A => go to state 8
+a => shift, go to state 9
+
+state 5
+A -> a.
+B -> a.
+
+reduce using rule (4)/(5)
+
+state 6
+S -> Aa.
+
+reduce using rule (1)
+
+state 7
+S -> Bb.
+
+reduce using rule (2)
+
+state 8
+S -> bA.b
+
+b => shift, go to state 10
+
+state 9
+A -> a.
+
+reduce using rule (4)
+
+state 10 
+S -> bAb.
+
+reduce using rule (3)
+
+action table
+
+|-------+-------+-------+-------+---+----+----+----|
+| state | a     | b     | $     |   | S  | A  | B  |
+|-------+-------+-------+-------+---+----+----+----|
+|     0 | s5    | s4    |       |   | g1 | g2 | g3 |
+|     1 |       |       | acc   |   |    |    |    |
+|     2 | s6    |       |       |   |    |    |    |
+|     3 |       | s7    |       |   |    |    |    |
+|     4 | s9    |       |       |   |    | g8 |    |
+|     5 | r4/r5 | r4/r5 | r4/r5 |   |    |    |    |
+|     6 | r1    | r1    | r1    |   |    |    |    |
+|     7 | r2    | r2    | r2    |   |    |    |    |
+|     8 |       | s10   |       |   |    |    |    |
+|     9 | r4    | r4    | r4    |   |    |    |    |
+|    10 | r3    | r3    | r3    |   |    |    |    |
+|-------+-------+-------+-------+---+----+----+----|
+
+(b)
+follow(S') = {$}
+follow(S) = {$}
+follow(A) = {a,b}
+follow(B) = {b}
+
+(c) LR(1) DFA
+
+rules:
+(1) S -> A a
+(2) S -> B b
+(3) S -> a c
+(4) A -> a
+(5) B -> a
+
+state 0
+S' -> .S $
+S -> .Aa $
+S -> .Bb $
+S -> .bAb $
+A -> .a a
+B -> .a b
+
+S => go to state 1
+A => go to state 2
+B => go to state 3
+b => shift, go to state 4
+a => shift, go to state 5
+
+state 1
+S' -> S. $
+
+$ => acc
+
+state 2
+S -> A.a $
+
+a => shift, go to state 6
+
+state 3
+S -> B.b $
+
+b => shift, go to state 7
+
+state 4
+S -> b.Ab $
+A -> .a b
+
+A => go to state 8
+a => shift, go to state 9
+
+state 5
+A -> a. a
+B -> a. b
+
+a => reduce using rule (4)
+b => reduce using rule (5)
+
+state 6
+S -> Aa. $
+
+$ => reduce using rule (1)
+
+state 7
+S -> Bb. $
+
+$ => reduce using rule (2)
+
+state 8
+S -> bA.b $
+
+b => shift, go to state 10
+
+state 9
+A -> a. b
+
+b => reduce using rule (4)
+
+state 10
+S -> bAb. $
+
+$ => reduce using rule (3)
+
+|-------+----+-----+---+-----+---+----+----+----|
+| state | a  | b   | c | $   |   | S  | A  | B  |
+|-------+----+-----+---+-----+---+----+----+----|
+|     0 | s5 | s4  |   |     |   | g1 | g2 | g3 |
+|     1 |    |     |   | acc |   |    |    |    |
+|     2 | s6 |     |   |     |   |    |    |    |
+|     3 |    | s7  |   |     |   |    |    |    |
+|     4 | s9 |     |   |     |   |    | g8 |    |
+|     5 | r4 | r5  |   |     |   |    |    |    |
+|     6 |    |     |   | r1  |   |    |    |    |
+|     7 |    |     |   | r2  |   |    |    |    |
+|     8 |    | s10 |   |     |   |    |    |    |
+|     9 |    | r4  |   |     |   |    |    |    |
+|    10 |    |     |   | r3  |   |    |    |    |
+|-------+----+-----+---+-----+---+----+----+----|
+
+(d)
+
+Because LR(1) distinguishes the conflicts of state 5 by using locally follow sets,
+instead of globally follow sets that SLR(1) used, which can't eliminate this conflict.
+
+5. (Extra Credit, 1.5 pts) 
+
+   (a) Show that LALR(1) is more powerful than SLR(1).
+       Hint: use the grammar in problem 4.
+   (b) Show an example where LALR(1) has fewer states than LR(1).
+       Hint: see LR slides.
+   (c) Show that LR(1) is more powerful than LALR(1).
+       Hint: use this grammar:
+
+       S -> Aa | Bb | bAb | bBa
+       A -> a
+       B -> a
+
+
+Solution.
+(a)
+The LR(1) DFA in question (4) has no same-core states thus it is equivalent to LALR(1). 
+This grammar is parsed by LALR(1) but not SLR(1).
+
+(b) The example in LR slides page 67 (pdf page 79) is good. 
+Here is another simple example.
+Grammar: S -> CC; C -> cC | d
+
+Rules:
+(1) S -> C C
+(2) C -> c C
+(3) C -> d
+
+LR(1) Table
+|-------+--------------+-----------|
+| state | rules        | actions   |
+|-------+--------------+-----------|
+|     0 | S'-> .S $    | S => g1   |
+|       | S -> .CC $   | C => g2   |
+|       | C -> .cC c/d | c => s3   |
+|       | C -> .d c/d  | d => s4   |
+|-------+--------------+-----------|
+|     1 | S' -> S. $   | $ => acc  |
+|-------+--------------+-----------|
+|     2 | S -> C.C $   | C => g5   |
+|       | C -> .cC $   | c => s6   |
+|       | C -> .d $    | d => s7   |
+|-------+--------------+-----------|
+|     3 | C -> c.C c/d | C => g8   |
+|       | C -> .cC c/d | c => s3   |
+|       | C -> .d c/d  | d => s4   |
+|-------+--------------+-----------|
+|     4 | C -> d. c/d  | c/d => r3 |
+|-------+--------------+-----------|
+|     5 | S -> CC. $   | $ => r1   |
+|-------+--------------+-----------|
+|     6 | C -> c.C $   | C => g9   |
+|       | C -> .cC $   | c => s6   |
+|       | C -> .d $    | d => s7   |
+|-------+--------------+-----------|
+|     7 | C -> d. $    | $ => r3   |
+|-------+--------------+-----------|
+|     8 | C -> cC. c/d | c/d => r2 |
+|-------+--------------+-----------|
+|     9 | C -> cC. $   | $ => r2   |
+|-------+--------------+-----------|
+
+LALR(1) can merge the same-core states:
+tate 4 and 7,
+state 3 and 6,
+state 8 and 9,
+thus it has less number of states than LR(1).
+
+(c)
+Rules:
+
+(1) S -> A a
+(2) S -> B b
+(3) S -> b A b
+(4) S -> b B a
+(5) A -> a
+(6) B -> a
+
+LR(1) table
+|-------+-------------+----------|
+| state | rules       | actions  |
+|-------+-------------+----------|
+|     0 | S' -> .S $  | S => g1  |
+|       | S -> .Aa $  | A => g2  |
+|       | S -> .Bb $  | B => g3  |
+|       | S -> .bAb $ | a => s4  |
+|       | S -> .bBa $ | b => s5  |
+|       | A -> .a a   |          |
+|       | B -> .a b   |          |
+|-------+-------------+----------|
+|     1 | S' -> S. $  | $ => acc |
+|-------+-------------+----------|
+|     2 | S -> A.a $  | a => s6  |
+|-------+-------------+----------|
+|     3 | S -> B.b $  | b => s7  |
+|-------+-------------+----------|
+|     4 | A -> a. a   | a => r5  |
+|       | B -> a. b   | b => r6  |
+|-------+-------------+----------|
+|     5 | S -> b.Ab $ | A => g8  |
+|       | S -> b.Ba $ | B => g9  |
+|       | A -> .a b   | a => s10 |
+|       | B -> .a a   |          |
+|-------+-------------+----------|
+|     6 | S -> Aa. $  | $ => r1  |
+|-------+-------------+----------|
+|     7 | S -> Bb. $  | $ => r2  |
+|-------+-------------+----------|
+|     8 | S -> bA.b $ | b => s11 |
+|-------+-------------+----------|
+|     9 | S -> bB.a $ | a => s12 |
+|-------+-------------+----------|
+|    10 | A -> a. b   | b => r5  |
+|       | B -> a. a   | a => r6  |
+|-------+-------------+----------|
+|    11 | S -> bAb. $ | $ => r3  |
+|-------+-------------+----------|
+|    12 | S -> bBa. $ | $ => r4  |
+|-------+-------------+----------|
+
+Note that state 4 and 10 are same-core states, but it would cause a reduce-reduce conflict if they are merged.
+Thus, this grammar is LR(1) but not LALR(1).

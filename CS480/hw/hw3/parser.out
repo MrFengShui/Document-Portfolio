@@ -1,0 +1,2092 @@
+Created by PLY version 3.8 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> module
+Rule 1     module -> stmtlist
+Rule 2     stmtlist -> stmt
+Rule 3     stmtlist -> stmt stmtlist
+Rule 4     stmt -> simple_stmt NEWLINE
+Rule 5     stmt -> if_stmt NEWLINE
+Rule 6     stmt -> for_stmt NEWLINE
+Rule 7     simple_stmt -> PRINT expr
+Rule 8     simple_stmt -> PRINT expr print_expr
+Rule 9     print_expr -> COMMA expr
+Rule 10    print_expr -> COMMA expr print_expr
+Rule 11    simple_stmt -> name ASSIGN expr
+Rule 12    if_stmt -> IF expr COLON simple_stmts
+Rule 13    if_stmt -> IF expr COLON suite
+Rule 14    for_stmt -> FOR name IN RANGE LPRN expr RPRN COLON simple_stmts
+Rule 15    for_stmt -> FOR name IN RANGE LPRN expr RPRN COLON suite
+Rule 16    simple_stmts -> simple_stmt
+Rule 17    simple_stmts -> simple_stmt SEMICOLON simple_stmts
+Rule 18    suite -> NEWLINE INDENT stmtlist DEDENT
+Rule 19    name -> NAME
+Rule 20    expr -> name
+Rule 21    expr -> INT
+Rule 22    expr -> USUB expr
+Rule 23    expr -> NOT expr
+Rule 24    expr -> expr PLUS expr
+Rule 25    expr -> LPRN expr RPRN
+Rule 26    expr -> expr AND expr
+Rule 27    expr -> expr OR expr
+Rule 28    expr -> TRUE
+Rule 29    expr -> FALSE
+Rule 30    expr -> expr IF expr ELSE expr
+Rule 31    expr -> expr LT expr
+Rule 32    expr -> expr GT expr
+Rule 33    expr -> expr EQ expr
+Rule 34    expr -> expr LTE expr
+Rule 35    expr -> expr GTE expr
+Rule 36    expr -> expr NOTEQA expr
+Rule 37    expr -> expr NOTEQB expr
+
+Terminals, with rules where they appear
+
+AND                  : 26
+ASSIGN               : 11
+COLON                : 12 13 14 15
+COMMA                : 9 10
+DEDENT               : 18
+ELSE                 : 30
+EQ                   : 33
+FALSE                : 29
+FOR                  : 14 15
+GT                   : 32
+GTE                  : 35
+IF                   : 12 13 30
+IN                   : 14 15
+INDENT               : 18
+INT                  : 21
+LPRN                 : 14 15 25
+LT                   : 31
+LTE                  : 34
+NAME                 : 19
+NEWLINE              : 4 5 6 18
+NOT                  : 23
+NOTEQA               : 36
+NOTEQB               : 37
+OR                   : 27
+PLUS                 : 24
+PRINT                : 7 8
+RANGE                : 14 15
+RPRN                 : 14 15 25
+SEMICOLON            : 17
+TRUE                 : 28
+USUB                 : 22
+error                : 
+
+Nonterminals, with rules where they appear
+
+expr                 : 7 8 9 10 11 12 13 14 15 22 23 24 24 25 26 26 27 27 30 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37
+for_stmt             : 6
+if_stmt              : 5
+module               : 0
+name                 : 11 14 15 20
+print_expr           : 8 10
+simple_stmt          : 4 16 17
+simple_stmts         : 12 14 17
+stmt                 : 2 3
+stmtlist             : 1 3 18
+suite                : 13 15
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . module
+    (1) module -> . stmtlist
+    (2) stmtlist -> . stmt
+    (3) stmtlist -> . stmt stmtlist
+    (4) stmt -> . simple_stmt NEWLINE
+    (5) stmt -> . if_stmt NEWLINE
+    (6) stmt -> . for_stmt NEWLINE
+    (7) simple_stmt -> . PRINT expr
+    (8) simple_stmt -> . PRINT expr print_expr
+    (11) simple_stmt -> . name ASSIGN expr
+    (12) if_stmt -> . IF expr COLON simple_stmts
+    (13) if_stmt -> . IF expr COLON suite
+    (14) for_stmt -> . FOR name IN RANGE LPRN expr RPRN COLON simple_stmts
+    (15) for_stmt -> . FOR name IN RANGE LPRN expr RPRN COLON suite
+    (19) name -> . NAME
+
+    PRINT           shift and go to state 3
+    IF              shift and go to state 5
+    FOR             shift and go to state 6
+    NAME            shift and go to state 9
+
+    if_stmt                        shift and go to state 10
+    simple_stmt                    shift and go to state 7
+    stmt                           shift and go to state 8
+    for_stmt                       shift and go to state 11
+    module                         shift and go to state 1
+    stmtlist                       shift and go to state 2
+    name                           shift and go to state 4
+
+state 1
+
+    (0) S' -> module .
+
+
+
+state 2
+
+    (1) module -> stmtlist .
+
+    $end            reduce using rule 1 (module -> stmtlist .)
+
+
+state 3
+
+    (7) simple_stmt -> PRINT . expr
+    (8) simple_stmt -> PRINT . expr print_expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 18
+    name                           shift and go to state 16
+
+state 4
+
+    (11) simple_stmt -> name . ASSIGN expr
+
+    ASSIGN          shift and go to state 20
+
+
+state 5
+
+    (12) if_stmt -> IF . expr COLON simple_stmts
+    (13) if_stmt -> IF . expr COLON suite
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 21
+    name                           shift and go to state 16
+
+state 6
+
+    (14) for_stmt -> FOR . name IN RANGE LPRN expr RPRN COLON simple_stmts
+    (15) for_stmt -> FOR . name IN RANGE LPRN expr RPRN COLON suite
+    (19) name -> . NAME
+
+    NAME            shift and go to state 9
+
+    name                           shift and go to state 22
+
+state 7
+
+    (4) stmt -> simple_stmt . NEWLINE
+
+    NEWLINE         shift and go to state 23
+
+
+state 8
+
+    (2) stmtlist -> stmt .
+    (3) stmtlist -> stmt . stmtlist
+    (2) stmtlist -> . stmt
+    (3) stmtlist -> . stmt stmtlist
+    (4) stmt -> . simple_stmt NEWLINE
+    (5) stmt -> . if_stmt NEWLINE
+    (6) stmt -> . for_stmt NEWLINE
+    (7) simple_stmt -> . PRINT expr
+    (8) simple_stmt -> . PRINT expr print_expr
+    (11) simple_stmt -> . name ASSIGN expr
+    (12) if_stmt -> . IF expr COLON simple_stmts
+    (13) if_stmt -> . IF expr COLON suite
+    (14) for_stmt -> . FOR name IN RANGE LPRN expr RPRN COLON simple_stmts
+    (15) for_stmt -> . FOR name IN RANGE LPRN expr RPRN COLON suite
+    (19) name -> . NAME
+
+    $end            reduce using rule 2 (stmtlist -> stmt .)
+    DEDENT          reduce using rule 2 (stmtlist -> stmt .)
+    PRINT           shift and go to state 3
+    IF              shift and go to state 5
+    FOR             shift and go to state 6
+    NAME            shift and go to state 9
+
+    if_stmt                        shift and go to state 10
+    simple_stmt                    shift and go to state 7
+    stmt                           shift and go to state 8
+    for_stmt                       shift and go to state 11
+    stmtlist                       shift and go to state 24
+    name                           shift and go to state 4
+
+state 9
+
+    (19) name -> NAME .
+
+    PLUS            reduce using rule 19 (name -> NAME .)
+    AND             reduce using rule 19 (name -> NAME .)
+    OR              reduce using rule 19 (name -> NAME .)
+    IF              reduce using rule 19 (name -> NAME .)
+    LT              reduce using rule 19 (name -> NAME .)
+    GT              reduce using rule 19 (name -> NAME .)
+    EQ              reduce using rule 19 (name -> NAME .)
+    LTE             reduce using rule 19 (name -> NAME .)
+    GTE             reduce using rule 19 (name -> NAME .)
+    NOTEQA          reduce using rule 19 (name -> NAME .)
+    NOTEQB          reduce using rule 19 (name -> NAME .)
+    COMMA           reduce using rule 19 (name -> NAME .)
+    NEWLINE         reduce using rule 19 (name -> NAME .)
+    SEMICOLON       reduce using rule 19 (name -> NAME .)
+    COLON           reduce using rule 19 (name -> NAME .)
+    RPRN            reduce using rule 19 (name -> NAME .)
+    ELSE            reduce using rule 19 (name -> NAME .)
+    ASSIGN          reduce using rule 19 (name -> NAME .)
+    IN              reduce using rule 19 (name -> NAME .)
+
+
+state 10
+
+    (5) stmt -> if_stmt . NEWLINE
+
+    NEWLINE         shift and go to state 25
+
+
+state 11
+
+    (6) stmt -> for_stmt . NEWLINE
+
+    NEWLINE         shift and go to state 26
+
+
+state 12
+
+    (28) expr -> TRUE .
+
+    PLUS            reduce using rule 28 (expr -> TRUE .)
+    AND             reduce using rule 28 (expr -> TRUE .)
+    OR              reduce using rule 28 (expr -> TRUE .)
+    IF              reduce using rule 28 (expr -> TRUE .)
+    LT              reduce using rule 28 (expr -> TRUE .)
+    GT              reduce using rule 28 (expr -> TRUE .)
+    EQ              reduce using rule 28 (expr -> TRUE .)
+    LTE             reduce using rule 28 (expr -> TRUE .)
+    GTE             reduce using rule 28 (expr -> TRUE .)
+    NOTEQA          reduce using rule 28 (expr -> TRUE .)
+    NOTEQB          reduce using rule 28 (expr -> TRUE .)
+    COMMA           reduce using rule 28 (expr -> TRUE .)
+    NEWLINE         reduce using rule 28 (expr -> TRUE .)
+    SEMICOLON       reduce using rule 28 (expr -> TRUE .)
+    COLON           reduce using rule 28 (expr -> TRUE .)
+    RPRN            reduce using rule 28 (expr -> TRUE .)
+    ELSE            reduce using rule 28 (expr -> TRUE .)
+
+
+state 13
+
+    (25) expr -> LPRN . expr RPRN
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 27
+    name                           shift and go to state 16
+
+state 14
+
+    (22) expr -> USUB . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 28
+    name                           shift and go to state 16
+
+state 15
+
+    (29) expr -> FALSE .
+
+    PLUS            reduce using rule 29 (expr -> FALSE .)
+    AND             reduce using rule 29 (expr -> FALSE .)
+    OR              reduce using rule 29 (expr -> FALSE .)
+    IF              reduce using rule 29 (expr -> FALSE .)
+    LT              reduce using rule 29 (expr -> FALSE .)
+    GT              reduce using rule 29 (expr -> FALSE .)
+    EQ              reduce using rule 29 (expr -> FALSE .)
+    LTE             reduce using rule 29 (expr -> FALSE .)
+    GTE             reduce using rule 29 (expr -> FALSE .)
+    NOTEQA          reduce using rule 29 (expr -> FALSE .)
+    NOTEQB          reduce using rule 29 (expr -> FALSE .)
+    COMMA           reduce using rule 29 (expr -> FALSE .)
+    NEWLINE         reduce using rule 29 (expr -> FALSE .)
+    SEMICOLON       reduce using rule 29 (expr -> FALSE .)
+    COLON           reduce using rule 29 (expr -> FALSE .)
+    RPRN            reduce using rule 29 (expr -> FALSE .)
+    ELSE            reduce using rule 29 (expr -> FALSE .)
+
+
+state 16
+
+    (20) expr -> name .
+
+    PLUS            reduce using rule 20 (expr -> name .)
+    AND             reduce using rule 20 (expr -> name .)
+    OR              reduce using rule 20 (expr -> name .)
+    IF              reduce using rule 20 (expr -> name .)
+    LT              reduce using rule 20 (expr -> name .)
+    GT              reduce using rule 20 (expr -> name .)
+    EQ              reduce using rule 20 (expr -> name .)
+    LTE             reduce using rule 20 (expr -> name .)
+    GTE             reduce using rule 20 (expr -> name .)
+    NOTEQA          reduce using rule 20 (expr -> name .)
+    NOTEQB          reduce using rule 20 (expr -> name .)
+    COMMA           reduce using rule 20 (expr -> name .)
+    NEWLINE         reduce using rule 20 (expr -> name .)
+    SEMICOLON       reduce using rule 20 (expr -> name .)
+    COLON           reduce using rule 20 (expr -> name .)
+    RPRN            reduce using rule 20 (expr -> name .)
+    ELSE            reduce using rule 20 (expr -> name .)
+
+
+state 17
+
+    (21) expr -> INT .
+
+    PLUS            reduce using rule 21 (expr -> INT .)
+    AND             reduce using rule 21 (expr -> INT .)
+    OR              reduce using rule 21 (expr -> INT .)
+    IF              reduce using rule 21 (expr -> INT .)
+    LT              reduce using rule 21 (expr -> INT .)
+    GT              reduce using rule 21 (expr -> INT .)
+    EQ              reduce using rule 21 (expr -> INT .)
+    LTE             reduce using rule 21 (expr -> INT .)
+    GTE             reduce using rule 21 (expr -> INT .)
+    NOTEQA          reduce using rule 21 (expr -> INT .)
+    NOTEQB          reduce using rule 21 (expr -> INT .)
+    COMMA           reduce using rule 21 (expr -> INT .)
+    NEWLINE         reduce using rule 21 (expr -> INT .)
+    SEMICOLON       reduce using rule 21 (expr -> INT .)
+    COLON           reduce using rule 21 (expr -> INT .)
+    RPRN            reduce using rule 21 (expr -> INT .)
+    ELSE            reduce using rule 21 (expr -> INT .)
+
+
+state 18
+
+    (7) simple_stmt -> PRINT expr .
+    (8) simple_stmt -> PRINT expr . print_expr
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+    (9) print_expr -> . COMMA expr
+    (10) print_expr -> . COMMA expr print_expr
+
+    NEWLINE         reduce using rule 7 (simple_stmt -> PRINT expr .)
+    SEMICOLON       reduce using rule 7 (simple_stmt -> PRINT expr .)
+    PLUS            shift and go to state 36
+    AND             shift and go to state 29
+    OR              shift and go to state 40
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+    COMMA           shift and go to state 38
+
+    print_expr                     shift and go to state 33
+
+state 19
+
+    (23) expr -> NOT . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 42
+    name                           shift and go to state 16
+
+state 20
+
+    (11) simple_stmt -> name ASSIGN . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 43
+    name                           shift and go to state 16
+
+state 21
+
+    (12) if_stmt -> IF expr . COLON simple_stmts
+    (13) if_stmt -> IF expr . COLON suite
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    COLON           shift and go to state 44
+    PLUS            shift and go to state 36
+    AND             shift and go to state 29
+    OR              shift and go to state 40
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+
+state 22
+
+    (14) for_stmt -> FOR name . IN RANGE LPRN expr RPRN COLON simple_stmts
+    (15) for_stmt -> FOR name . IN RANGE LPRN expr RPRN COLON suite
+
+    IN              shift and go to state 45
+
+
+state 23
+
+    (4) stmt -> simple_stmt NEWLINE .
+
+    PRINT           reduce using rule 4 (stmt -> simple_stmt NEWLINE .)
+    IF              reduce using rule 4 (stmt -> simple_stmt NEWLINE .)
+    FOR             reduce using rule 4 (stmt -> simple_stmt NEWLINE .)
+    NAME            reduce using rule 4 (stmt -> simple_stmt NEWLINE .)
+    DEDENT          reduce using rule 4 (stmt -> simple_stmt NEWLINE .)
+    $end            reduce using rule 4 (stmt -> simple_stmt NEWLINE .)
+
+
+state 24
+
+    (3) stmtlist -> stmt stmtlist .
+
+    $end            reduce using rule 3 (stmtlist -> stmt stmtlist .)
+    DEDENT          reduce using rule 3 (stmtlist -> stmt stmtlist .)
+
+
+state 25
+
+    (5) stmt -> if_stmt NEWLINE .
+
+    PRINT           reduce using rule 5 (stmt -> if_stmt NEWLINE .)
+    IF              reduce using rule 5 (stmt -> if_stmt NEWLINE .)
+    FOR             reduce using rule 5 (stmt -> if_stmt NEWLINE .)
+    NAME            reduce using rule 5 (stmt -> if_stmt NEWLINE .)
+    DEDENT          reduce using rule 5 (stmt -> if_stmt NEWLINE .)
+    $end            reduce using rule 5 (stmt -> if_stmt NEWLINE .)
+
+
+state 26
+
+    (6) stmt -> for_stmt NEWLINE .
+
+    PRINT           reduce using rule 6 (stmt -> for_stmt NEWLINE .)
+    IF              reduce using rule 6 (stmt -> for_stmt NEWLINE .)
+    FOR             reduce using rule 6 (stmt -> for_stmt NEWLINE .)
+    NAME            reduce using rule 6 (stmt -> for_stmt NEWLINE .)
+    DEDENT          reduce using rule 6 (stmt -> for_stmt NEWLINE .)
+    $end            reduce using rule 6 (stmt -> for_stmt NEWLINE .)
+
+
+state 27
+
+    (25) expr -> LPRN expr . RPRN
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    RPRN            shift and go to state 46
+    PLUS            shift and go to state 36
+    AND             shift and go to state 29
+    OR              shift and go to state 40
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+
+state 28
+
+    (22) expr -> USUB expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    PLUS            reduce using rule 22 (expr -> USUB expr .)
+    AND             reduce using rule 22 (expr -> USUB expr .)
+    OR              reduce using rule 22 (expr -> USUB expr .)
+    IF              reduce using rule 22 (expr -> USUB expr .)
+    LT              reduce using rule 22 (expr -> USUB expr .)
+    GT              reduce using rule 22 (expr -> USUB expr .)
+    EQ              reduce using rule 22 (expr -> USUB expr .)
+    LTE             reduce using rule 22 (expr -> USUB expr .)
+    GTE             reduce using rule 22 (expr -> USUB expr .)
+    NOTEQA          reduce using rule 22 (expr -> USUB expr .)
+    NOTEQB          reduce using rule 22 (expr -> USUB expr .)
+    COMMA           reduce using rule 22 (expr -> USUB expr .)
+    NEWLINE         reduce using rule 22 (expr -> USUB expr .)
+    SEMICOLON       reduce using rule 22 (expr -> USUB expr .)
+    COLON           reduce using rule 22 (expr -> USUB expr .)
+    RPRN            reduce using rule 22 (expr -> USUB expr .)
+    ELSE            reduce using rule 22 (expr -> USUB expr .)
+
+  ! PLUS            [ shift and go to state 36 ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+  ! IF              [ shift and go to state 41 ]
+  ! LT              [ shift and go to state 34 ]
+  ! GT              [ shift and go to state 31 ]
+  ! EQ              [ shift and go to state 39 ]
+  ! LTE             [ shift and go to state 37 ]
+  ! GTE             [ shift and go to state 32 ]
+  ! NOTEQA          [ shift and go to state 30 ]
+  ! NOTEQB          [ shift and go to state 35 ]
+
+
+state 29
+
+    (26) expr -> expr AND . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 47
+    name                           shift and go to state 16
+
+state 30
+
+    (36) expr -> expr NOTEQA . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 48
+    name                           shift and go to state 16
+
+state 31
+
+    (32) expr -> expr GT . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 49
+    name                           shift and go to state 16
+
+state 32
+
+    (35) expr -> expr GTE . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 50
+    name                           shift and go to state 16
+
+state 33
+
+    (8) simple_stmt -> PRINT expr print_expr .
+
+    NEWLINE         reduce using rule 8 (simple_stmt -> PRINT expr print_expr .)
+    SEMICOLON       reduce using rule 8 (simple_stmt -> PRINT expr print_expr .)
+
+
+state 34
+
+    (31) expr -> expr LT . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 51
+    name                           shift and go to state 16
+
+state 35
+
+    (37) expr -> expr NOTEQB . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 52
+    name                           shift and go to state 16
+
+state 36
+
+    (24) expr -> expr PLUS . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 53
+    name                           shift and go to state 16
+
+state 37
+
+    (34) expr -> expr LTE . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 54
+    name                           shift and go to state 16
+
+state 38
+
+    (9) print_expr -> COMMA . expr
+    (10) print_expr -> COMMA . expr print_expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 55
+    name                           shift and go to state 16
+
+state 39
+
+    (33) expr -> expr EQ . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 56
+    name                           shift and go to state 16
+
+state 40
+
+    (27) expr -> expr OR . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 57
+    name                           shift and go to state 16
+
+state 41
+
+    (30) expr -> expr IF . expr ELSE expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 58
+    name                           shift and go to state 16
+
+state 42
+
+    (23) expr -> NOT expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    PLUS            reduce using rule 23 (expr -> NOT expr .)
+    AND             reduce using rule 23 (expr -> NOT expr .)
+    OR              reduce using rule 23 (expr -> NOT expr .)
+    IF              reduce using rule 23 (expr -> NOT expr .)
+    LT              reduce using rule 23 (expr -> NOT expr .)
+    GT              reduce using rule 23 (expr -> NOT expr .)
+    EQ              reduce using rule 23 (expr -> NOT expr .)
+    LTE             reduce using rule 23 (expr -> NOT expr .)
+    GTE             reduce using rule 23 (expr -> NOT expr .)
+    NOTEQA          reduce using rule 23 (expr -> NOT expr .)
+    NOTEQB          reduce using rule 23 (expr -> NOT expr .)
+    COMMA           reduce using rule 23 (expr -> NOT expr .)
+    NEWLINE         reduce using rule 23 (expr -> NOT expr .)
+    SEMICOLON       reduce using rule 23 (expr -> NOT expr .)
+    COLON           reduce using rule 23 (expr -> NOT expr .)
+    RPRN            reduce using rule 23 (expr -> NOT expr .)
+    ELSE            reduce using rule 23 (expr -> NOT expr .)
+
+  ! PLUS            [ shift and go to state 36 ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+  ! IF              [ shift and go to state 41 ]
+  ! LT              [ shift and go to state 34 ]
+  ! GT              [ shift and go to state 31 ]
+  ! EQ              [ shift and go to state 39 ]
+  ! LTE             [ shift and go to state 37 ]
+  ! GTE             [ shift and go to state 32 ]
+  ! NOTEQA          [ shift and go to state 30 ]
+  ! NOTEQB          [ shift and go to state 35 ]
+
+
+state 43
+
+    (11) simple_stmt -> name ASSIGN expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    NEWLINE         reduce using rule 11 (simple_stmt -> name ASSIGN expr .)
+    SEMICOLON       reduce using rule 11 (simple_stmt -> name ASSIGN expr .)
+    PLUS            shift and go to state 36
+    AND             shift and go to state 29
+    OR              shift and go to state 40
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+
+state 44
+
+    (12) if_stmt -> IF expr COLON . simple_stmts
+    (13) if_stmt -> IF expr COLON . suite
+    (16) simple_stmts -> . simple_stmt
+    (17) simple_stmts -> . simple_stmt SEMICOLON simple_stmts
+    (18) suite -> . NEWLINE INDENT stmtlist DEDENT
+    (7) simple_stmt -> . PRINT expr
+    (8) simple_stmt -> . PRINT expr print_expr
+    (11) simple_stmt -> . name ASSIGN expr
+    (19) name -> . NAME
+
+    NEWLINE         shift and go to state 60
+    PRINT           shift and go to state 3
+    NAME            shift and go to state 9
+
+    simple_stmts                   shift and go to state 61
+    simple_stmt                    shift and go to state 59
+    suite                          shift and go to state 62
+    name                           shift and go to state 4
+
+state 45
+
+    (14) for_stmt -> FOR name IN . RANGE LPRN expr RPRN COLON simple_stmts
+    (15) for_stmt -> FOR name IN . RANGE LPRN expr RPRN COLON suite
+
+    RANGE           shift and go to state 63
+
+
+state 46
+
+    (25) expr -> LPRN expr RPRN .
+
+    PLUS            reduce using rule 25 (expr -> LPRN expr RPRN .)
+    AND             reduce using rule 25 (expr -> LPRN expr RPRN .)
+    OR              reduce using rule 25 (expr -> LPRN expr RPRN .)
+    IF              reduce using rule 25 (expr -> LPRN expr RPRN .)
+    LT              reduce using rule 25 (expr -> LPRN expr RPRN .)
+    GT              reduce using rule 25 (expr -> LPRN expr RPRN .)
+    EQ              reduce using rule 25 (expr -> LPRN expr RPRN .)
+    LTE             reduce using rule 25 (expr -> LPRN expr RPRN .)
+    GTE             reduce using rule 25 (expr -> LPRN expr RPRN .)
+    NOTEQA          reduce using rule 25 (expr -> LPRN expr RPRN .)
+    NOTEQB          reduce using rule 25 (expr -> LPRN expr RPRN .)
+    COMMA           reduce using rule 25 (expr -> LPRN expr RPRN .)
+    NEWLINE         reduce using rule 25 (expr -> LPRN expr RPRN .)
+    SEMICOLON       reduce using rule 25 (expr -> LPRN expr RPRN .)
+    COLON           reduce using rule 25 (expr -> LPRN expr RPRN .)
+    RPRN            reduce using rule 25 (expr -> LPRN expr RPRN .)
+    ELSE            reduce using rule 25 (expr -> LPRN expr RPRN .)
+
+
+state 47
+
+    (26) expr -> expr AND expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    AND             reduce using rule 26 (expr -> expr AND expr .)
+    OR              reduce using rule 26 (expr -> expr AND expr .)
+    COMMA           reduce using rule 26 (expr -> expr AND expr .)
+    NEWLINE         reduce using rule 26 (expr -> expr AND expr .)
+    SEMICOLON       reduce using rule 26 (expr -> expr AND expr .)
+    COLON           reduce using rule 26 (expr -> expr AND expr .)
+    RPRN            reduce using rule 26 (expr -> expr AND expr .)
+    ELSE            reduce using rule 26 (expr -> expr AND expr .)
+    PLUS            shift and go to state 36
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+  ! PLUS            [ reduce using rule 26 (expr -> expr AND expr .) ]
+  ! IF              [ reduce using rule 26 (expr -> expr AND expr .) ]
+  ! LT              [ reduce using rule 26 (expr -> expr AND expr .) ]
+  ! GT              [ reduce using rule 26 (expr -> expr AND expr .) ]
+  ! EQ              [ reduce using rule 26 (expr -> expr AND expr .) ]
+  ! LTE             [ reduce using rule 26 (expr -> expr AND expr .) ]
+  ! GTE             [ reduce using rule 26 (expr -> expr AND expr .) ]
+  ! NOTEQA          [ reduce using rule 26 (expr -> expr AND expr .) ]
+  ! NOTEQB          [ reduce using rule 26 (expr -> expr AND expr .) ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 48
+
+    (36) expr -> expr NOTEQA expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    AND             reduce using rule 36 (expr -> expr NOTEQA expr .)
+    OR              reduce using rule 36 (expr -> expr NOTEQA expr .)
+    COMMA           reduce using rule 36 (expr -> expr NOTEQA expr .)
+    NEWLINE         reduce using rule 36 (expr -> expr NOTEQA expr .)
+    SEMICOLON       reduce using rule 36 (expr -> expr NOTEQA expr .)
+    COLON           reduce using rule 36 (expr -> expr NOTEQA expr .)
+    RPRN            reduce using rule 36 (expr -> expr NOTEQA expr .)
+    ELSE            reduce using rule 36 (expr -> expr NOTEQA expr .)
+    PLUS            shift and go to state 36
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+  ! PLUS            [ reduce using rule 36 (expr -> expr NOTEQA expr .) ]
+  ! IF              [ reduce using rule 36 (expr -> expr NOTEQA expr .) ]
+  ! LT              [ reduce using rule 36 (expr -> expr NOTEQA expr .) ]
+  ! GT              [ reduce using rule 36 (expr -> expr NOTEQA expr .) ]
+  ! EQ              [ reduce using rule 36 (expr -> expr NOTEQA expr .) ]
+  ! LTE             [ reduce using rule 36 (expr -> expr NOTEQA expr .) ]
+  ! GTE             [ reduce using rule 36 (expr -> expr NOTEQA expr .) ]
+  ! NOTEQA          [ reduce using rule 36 (expr -> expr NOTEQA expr .) ]
+  ! NOTEQB          [ reduce using rule 36 (expr -> expr NOTEQA expr .) ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 49
+
+    (32) expr -> expr GT expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    AND             reduce using rule 32 (expr -> expr GT expr .)
+    OR              reduce using rule 32 (expr -> expr GT expr .)
+    COMMA           reduce using rule 32 (expr -> expr GT expr .)
+    NEWLINE         reduce using rule 32 (expr -> expr GT expr .)
+    SEMICOLON       reduce using rule 32 (expr -> expr GT expr .)
+    COLON           reduce using rule 32 (expr -> expr GT expr .)
+    RPRN            reduce using rule 32 (expr -> expr GT expr .)
+    ELSE            reduce using rule 32 (expr -> expr GT expr .)
+    PLUS            shift and go to state 36
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+  ! PLUS            [ reduce using rule 32 (expr -> expr GT expr .) ]
+  ! IF              [ reduce using rule 32 (expr -> expr GT expr .) ]
+  ! LT              [ reduce using rule 32 (expr -> expr GT expr .) ]
+  ! GT              [ reduce using rule 32 (expr -> expr GT expr .) ]
+  ! EQ              [ reduce using rule 32 (expr -> expr GT expr .) ]
+  ! LTE             [ reduce using rule 32 (expr -> expr GT expr .) ]
+  ! GTE             [ reduce using rule 32 (expr -> expr GT expr .) ]
+  ! NOTEQA          [ reduce using rule 32 (expr -> expr GT expr .) ]
+  ! NOTEQB          [ reduce using rule 32 (expr -> expr GT expr .) ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 50
+
+    (35) expr -> expr GTE expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    AND             reduce using rule 35 (expr -> expr GTE expr .)
+    OR              reduce using rule 35 (expr -> expr GTE expr .)
+    COMMA           reduce using rule 35 (expr -> expr GTE expr .)
+    NEWLINE         reduce using rule 35 (expr -> expr GTE expr .)
+    SEMICOLON       reduce using rule 35 (expr -> expr GTE expr .)
+    COLON           reduce using rule 35 (expr -> expr GTE expr .)
+    RPRN            reduce using rule 35 (expr -> expr GTE expr .)
+    ELSE            reduce using rule 35 (expr -> expr GTE expr .)
+    PLUS            shift and go to state 36
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+  ! PLUS            [ reduce using rule 35 (expr -> expr GTE expr .) ]
+  ! IF              [ reduce using rule 35 (expr -> expr GTE expr .) ]
+  ! LT              [ reduce using rule 35 (expr -> expr GTE expr .) ]
+  ! GT              [ reduce using rule 35 (expr -> expr GTE expr .) ]
+  ! EQ              [ reduce using rule 35 (expr -> expr GTE expr .) ]
+  ! LTE             [ reduce using rule 35 (expr -> expr GTE expr .) ]
+  ! GTE             [ reduce using rule 35 (expr -> expr GTE expr .) ]
+  ! NOTEQA          [ reduce using rule 35 (expr -> expr GTE expr .) ]
+  ! NOTEQB          [ reduce using rule 35 (expr -> expr GTE expr .) ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 51
+
+    (31) expr -> expr LT expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    AND             reduce using rule 31 (expr -> expr LT expr .)
+    OR              reduce using rule 31 (expr -> expr LT expr .)
+    COMMA           reduce using rule 31 (expr -> expr LT expr .)
+    NEWLINE         reduce using rule 31 (expr -> expr LT expr .)
+    SEMICOLON       reduce using rule 31 (expr -> expr LT expr .)
+    COLON           reduce using rule 31 (expr -> expr LT expr .)
+    RPRN            reduce using rule 31 (expr -> expr LT expr .)
+    ELSE            reduce using rule 31 (expr -> expr LT expr .)
+    PLUS            shift and go to state 36
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+  ! PLUS            [ reduce using rule 31 (expr -> expr LT expr .) ]
+  ! IF              [ reduce using rule 31 (expr -> expr LT expr .) ]
+  ! LT              [ reduce using rule 31 (expr -> expr LT expr .) ]
+  ! GT              [ reduce using rule 31 (expr -> expr LT expr .) ]
+  ! EQ              [ reduce using rule 31 (expr -> expr LT expr .) ]
+  ! LTE             [ reduce using rule 31 (expr -> expr LT expr .) ]
+  ! GTE             [ reduce using rule 31 (expr -> expr LT expr .) ]
+  ! NOTEQA          [ reduce using rule 31 (expr -> expr LT expr .) ]
+  ! NOTEQB          [ reduce using rule 31 (expr -> expr LT expr .) ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 52
+
+    (37) expr -> expr NOTEQB expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    AND             reduce using rule 37 (expr -> expr NOTEQB expr .)
+    OR              reduce using rule 37 (expr -> expr NOTEQB expr .)
+    COMMA           reduce using rule 37 (expr -> expr NOTEQB expr .)
+    NEWLINE         reduce using rule 37 (expr -> expr NOTEQB expr .)
+    SEMICOLON       reduce using rule 37 (expr -> expr NOTEQB expr .)
+    COLON           reduce using rule 37 (expr -> expr NOTEQB expr .)
+    RPRN            reduce using rule 37 (expr -> expr NOTEQB expr .)
+    ELSE            reduce using rule 37 (expr -> expr NOTEQB expr .)
+    PLUS            shift and go to state 36
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+  ! PLUS            [ reduce using rule 37 (expr -> expr NOTEQB expr .) ]
+  ! IF              [ reduce using rule 37 (expr -> expr NOTEQB expr .) ]
+  ! LT              [ reduce using rule 37 (expr -> expr NOTEQB expr .) ]
+  ! GT              [ reduce using rule 37 (expr -> expr NOTEQB expr .) ]
+  ! EQ              [ reduce using rule 37 (expr -> expr NOTEQB expr .) ]
+  ! LTE             [ reduce using rule 37 (expr -> expr NOTEQB expr .) ]
+  ! GTE             [ reduce using rule 37 (expr -> expr NOTEQB expr .) ]
+  ! NOTEQA          [ reduce using rule 37 (expr -> expr NOTEQB expr .) ]
+  ! NOTEQB          [ reduce using rule 37 (expr -> expr NOTEQB expr .) ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 53
+
+    (24) expr -> expr PLUS expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    PLUS            reduce using rule 24 (expr -> expr PLUS expr .)
+    AND             reduce using rule 24 (expr -> expr PLUS expr .)
+    OR              reduce using rule 24 (expr -> expr PLUS expr .)
+    IF              reduce using rule 24 (expr -> expr PLUS expr .)
+    LT              reduce using rule 24 (expr -> expr PLUS expr .)
+    GT              reduce using rule 24 (expr -> expr PLUS expr .)
+    EQ              reduce using rule 24 (expr -> expr PLUS expr .)
+    LTE             reduce using rule 24 (expr -> expr PLUS expr .)
+    GTE             reduce using rule 24 (expr -> expr PLUS expr .)
+    NOTEQA          reduce using rule 24 (expr -> expr PLUS expr .)
+    NOTEQB          reduce using rule 24 (expr -> expr PLUS expr .)
+    COMMA           reduce using rule 24 (expr -> expr PLUS expr .)
+    NEWLINE         reduce using rule 24 (expr -> expr PLUS expr .)
+    SEMICOLON       reduce using rule 24 (expr -> expr PLUS expr .)
+    COLON           reduce using rule 24 (expr -> expr PLUS expr .)
+    RPRN            reduce using rule 24 (expr -> expr PLUS expr .)
+    ELSE            reduce using rule 24 (expr -> expr PLUS expr .)
+
+  ! PLUS            [ shift and go to state 36 ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+  ! IF              [ shift and go to state 41 ]
+  ! LT              [ shift and go to state 34 ]
+  ! GT              [ shift and go to state 31 ]
+  ! EQ              [ shift and go to state 39 ]
+  ! LTE             [ shift and go to state 37 ]
+  ! GTE             [ shift and go to state 32 ]
+  ! NOTEQA          [ shift and go to state 30 ]
+  ! NOTEQB          [ shift and go to state 35 ]
+
+
+state 54
+
+    (34) expr -> expr LTE expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    AND             reduce using rule 34 (expr -> expr LTE expr .)
+    OR              reduce using rule 34 (expr -> expr LTE expr .)
+    COMMA           reduce using rule 34 (expr -> expr LTE expr .)
+    NEWLINE         reduce using rule 34 (expr -> expr LTE expr .)
+    SEMICOLON       reduce using rule 34 (expr -> expr LTE expr .)
+    COLON           reduce using rule 34 (expr -> expr LTE expr .)
+    RPRN            reduce using rule 34 (expr -> expr LTE expr .)
+    ELSE            reduce using rule 34 (expr -> expr LTE expr .)
+    PLUS            shift and go to state 36
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+  ! PLUS            [ reduce using rule 34 (expr -> expr LTE expr .) ]
+  ! IF              [ reduce using rule 34 (expr -> expr LTE expr .) ]
+  ! LT              [ reduce using rule 34 (expr -> expr LTE expr .) ]
+  ! GT              [ reduce using rule 34 (expr -> expr LTE expr .) ]
+  ! EQ              [ reduce using rule 34 (expr -> expr LTE expr .) ]
+  ! LTE             [ reduce using rule 34 (expr -> expr LTE expr .) ]
+  ! GTE             [ reduce using rule 34 (expr -> expr LTE expr .) ]
+  ! NOTEQA          [ reduce using rule 34 (expr -> expr LTE expr .) ]
+  ! NOTEQB          [ reduce using rule 34 (expr -> expr LTE expr .) ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 55
+
+    (9) print_expr -> COMMA expr .
+    (10) print_expr -> COMMA expr . print_expr
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+    (9) print_expr -> . COMMA expr
+    (10) print_expr -> . COMMA expr print_expr
+
+    NEWLINE         reduce using rule 9 (print_expr -> COMMA expr .)
+    SEMICOLON       reduce using rule 9 (print_expr -> COMMA expr .)
+    PLUS            shift and go to state 36
+    AND             shift and go to state 29
+    OR              shift and go to state 40
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+    COMMA           shift and go to state 38
+
+    print_expr                     shift and go to state 64
+
+state 56
+
+    (33) expr -> expr EQ expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    AND             reduce using rule 33 (expr -> expr EQ expr .)
+    OR              reduce using rule 33 (expr -> expr EQ expr .)
+    COMMA           reduce using rule 33 (expr -> expr EQ expr .)
+    NEWLINE         reduce using rule 33 (expr -> expr EQ expr .)
+    SEMICOLON       reduce using rule 33 (expr -> expr EQ expr .)
+    COLON           reduce using rule 33 (expr -> expr EQ expr .)
+    RPRN            reduce using rule 33 (expr -> expr EQ expr .)
+    ELSE            reduce using rule 33 (expr -> expr EQ expr .)
+    PLUS            shift and go to state 36
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+  ! PLUS            [ reduce using rule 33 (expr -> expr EQ expr .) ]
+  ! IF              [ reduce using rule 33 (expr -> expr EQ expr .) ]
+  ! LT              [ reduce using rule 33 (expr -> expr EQ expr .) ]
+  ! GT              [ reduce using rule 33 (expr -> expr EQ expr .) ]
+  ! EQ              [ reduce using rule 33 (expr -> expr EQ expr .) ]
+  ! LTE             [ reduce using rule 33 (expr -> expr EQ expr .) ]
+  ! GTE             [ reduce using rule 33 (expr -> expr EQ expr .) ]
+  ! NOTEQA          [ reduce using rule 33 (expr -> expr EQ expr .) ]
+  ! NOTEQB          [ reduce using rule 33 (expr -> expr EQ expr .) ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 57
+
+    (27) expr -> expr OR expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    OR              reduce using rule 27 (expr -> expr OR expr .)
+    COMMA           reduce using rule 27 (expr -> expr OR expr .)
+    NEWLINE         reduce using rule 27 (expr -> expr OR expr .)
+    SEMICOLON       reduce using rule 27 (expr -> expr OR expr .)
+    COLON           reduce using rule 27 (expr -> expr OR expr .)
+    RPRN            reduce using rule 27 (expr -> expr OR expr .)
+    ELSE            reduce using rule 27 (expr -> expr OR expr .)
+    PLUS            shift and go to state 36
+    AND             shift and go to state 29
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+  ! PLUS            [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! AND             [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! IF              [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! LT              [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! GT              [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! EQ              [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! LTE             [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! GTE             [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! NOTEQA          [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! NOTEQB          [ reduce using rule 27 (expr -> expr OR expr .) ]
+  ! OR              [ shift and go to state 40 ]
+
+
+state 58
+
+    (30) expr -> expr IF expr . ELSE expr
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    ELSE            shift and go to state 65
+    PLUS            shift and go to state 36
+    AND             shift and go to state 29
+    OR              shift and go to state 40
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+
+state 59
+
+    (16) simple_stmts -> simple_stmt .
+    (17) simple_stmts -> simple_stmt . SEMICOLON simple_stmts
+
+    NEWLINE         reduce using rule 16 (simple_stmts -> simple_stmt .)
+    SEMICOLON       shift and go to state 66
+
+
+state 60
+
+    (18) suite -> NEWLINE . INDENT stmtlist DEDENT
+
+    INDENT          shift and go to state 67
+
+
+state 61
+
+    (12) if_stmt -> IF expr COLON simple_stmts .
+
+    NEWLINE         reduce using rule 12 (if_stmt -> IF expr COLON simple_stmts .)
+
+
+state 62
+
+    (13) if_stmt -> IF expr COLON suite .
+
+    NEWLINE         reduce using rule 13 (if_stmt -> IF expr COLON suite .)
+
+
+state 63
+
+    (14) for_stmt -> FOR name IN RANGE . LPRN expr RPRN COLON simple_stmts
+    (15) for_stmt -> FOR name IN RANGE . LPRN expr RPRN COLON suite
+
+    LPRN            shift and go to state 68
+
+
+state 64
+
+    (10) print_expr -> COMMA expr print_expr .
+
+    NEWLINE         reduce using rule 10 (print_expr -> COMMA expr print_expr .)
+    SEMICOLON       reduce using rule 10 (print_expr -> COMMA expr print_expr .)
+
+
+state 65
+
+    (30) expr -> expr IF expr ELSE . expr
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 69
+    name                           shift and go to state 16
+
+state 66
+
+    (17) simple_stmts -> simple_stmt SEMICOLON . simple_stmts
+    (16) simple_stmts -> . simple_stmt
+    (17) simple_stmts -> . simple_stmt SEMICOLON simple_stmts
+    (7) simple_stmt -> . PRINT expr
+    (8) simple_stmt -> . PRINT expr print_expr
+    (11) simple_stmt -> . name ASSIGN expr
+    (19) name -> . NAME
+
+    PRINT           shift and go to state 3
+    NAME            shift and go to state 9
+
+    simple_stmt                    shift and go to state 59
+    name                           shift and go to state 4
+    simple_stmts                   shift and go to state 70
+
+state 67
+
+    (18) suite -> NEWLINE INDENT . stmtlist DEDENT
+    (2) stmtlist -> . stmt
+    (3) stmtlist -> . stmt stmtlist
+    (4) stmt -> . simple_stmt NEWLINE
+    (5) stmt -> . if_stmt NEWLINE
+    (6) stmt -> . for_stmt NEWLINE
+    (7) simple_stmt -> . PRINT expr
+    (8) simple_stmt -> . PRINT expr print_expr
+    (11) simple_stmt -> . name ASSIGN expr
+    (12) if_stmt -> . IF expr COLON simple_stmts
+    (13) if_stmt -> . IF expr COLON suite
+    (14) for_stmt -> . FOR name IN RANGE LPRN expr RPRN COLON simple_stmts
+    (15) for_stmt -> . FOR name IN RANGE LPRN expr RPRN COLON suite
+    (19) name -> . NAME
+
+    PRINT           shift and go to state 3
+    IF              shift and go to state 5
+    FOR             shift and go to state 6
+    NAME            shift and go to state 9
+
+    if_stmt                        shift and go to state 10
+    simple_stmt                    shift and go to state 7
+    stmt                           shift and go to state 8
+    for_stmt                       shift and go to state 11
+    stmtlist                       shift and go to state 71
+    name                           shift and go to state 4
+
+state 68
+
+    (14) for_stmt -> FOR name IN RANGE LPRN . expr RPRN COLON simple_stmts
+    (15) for_stmt -> FOR name IN RANGE LPRN . expr RPRN COLON suite
+    (20) expr -> . name
+    (21) expr -> . INT
+    (22) expr -> . USUB expr
+    (23) expr -> . NOT expr
+    (24) expr -> . expr PLUS expr
+    (25) expr -> . LPRN expr RPRN
+    (26) expr -> . expr AND expr
+    (27) expr -> . expr OR expr
+    (28) expr -> . TRUE
+    (29) expr -> . FALSE
+    (30) expr -> . expr IF expr ELSE expr
+    (31) expr -> . expr LT expr
+    (32) expr -> . expr GT expr
+    (33) expr -> . expr EQ expr
+    (34) expr -> . expr LTE expr
+    (35) expr -> . expr GTE expr
+    (36) expr -> . expr NOTEQA expr
+    (37) expr -> . expr NOTEQB expr
+    (19) name -> . NAME
+
+    INT             shift and go to state 17
+    USUB            shift and go to state 14
+    NOT             shift and go to state 19
+    LPRN            shift and go to state 13
+    TRUE            shift and go to state 12
+    FALSE           shift and go to state 15
+    NAME            shift and go to state 9
+
+    expr                           shift and go to state 72
+    name                           shift and go to state 16
+
+state 69
+
+    (30) expr -> expr IF expr ELSE expr .
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    AND             reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    OR              reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    LT              reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    GT              reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    EQ              reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    LTE             reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    GTE             reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    NOTEQA          reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    NOTEQB          reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    COMMA           reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    NEWLINE         reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    SEMICOLON       reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    COLON           reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    RPRN            reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    ELSE            reduce using rule 30 (expr -> expr IF expr ELSE expr .)
+    PLUS            shift and go to state 36
+    IF              shift and go to state 41
+
+  ! PLUS            [ reduce using rule 30 (expr -> expr IF expr ELSE expr .) ]
+  ! IF              [ reduce using rule 30 (expr -> expr IF expr ELSE expr .) ]
+  ! AND             [ shift and go to state 29 ]
+  ! OR              [ shift and go to state 40 ]
+  ! LT              [ shift and go to state 34 ]
+  ! GT              [ shift and go to state 31 ]
+  ! EQ              [ shift and go to state 39 ]
+  ! LTE             [ shift and go to state 37 ]
+  ! GTE             [ shift and go to state 32 ]
+  ! NOTEQA          [ shift and go to state 30 ]
+  ! NOTEQB          [ shift and go to state 35 ]
+
+
+state 70
+
+    (17) simple_stmts -> simple_stmt SEMICOLON simple_stmts .
+
+    NEWLINE         reduce using rule 17 (simple_stmts -> simple_stmt SEMICOLON simple_stmts .)
+
+
+state 71
+
+    (18) suite -> NEWLINE INDENT stmtlist . DEDENT
+
+    DEDENT          shift and go to state 73
+
+
+state 72
+
+    (14) for_stmt -> FOR name IN RANGE LPRN expr . RPRN COLON simple_stmts
+    (15) for_stmt -> FOR name IN RANGE LPRN expr . RPRN COLON suite
+    (24) expr -> expr . PLUS expr
+    (26) expr -> expr . AND expr
+    (27) expr -> expr . OR expr
+    (30) expr -> expr . IF expr ELSE expr
+    (31) expr -> expr . LT expr
+    (32) expr -> expr . GT expr
+    (33) expr -> expr . EQ expr
+    (34) expr -> expr . LTE expr
+    (35) expr -> expr . GTE expr
+    (36) expr -> expr . NOTEQA expr
+    (37) expr -> expr . NOTEQB expr
+
+    RPRN            shift and go to state 74
+    PLUS            shift and go to state 36
+    AND             shift and go to state 29
+    OR              shift and go to state 40
+    IF              shift and go to state 41
+    LT              shift and go to state 34
+    GT              shift and go to state 31
+    EQ              shift and go to state 39
+    LTE             shift and go to state 37
+    GTE             shift and go to state 32
+    NOTEQA          shift and go to state 30
+    NOTEQB          shift and go to state 35
+
+
+state 73
+
+    (18) suite -> NEWLINE INDENT stmtlist DEDENT .
+
+    NEWLINE         reduce using rule 18 (suite -> NEWLINE INDENT stmtlist DEDENT .)
+
+
+state 74
+
+    (14) for_stmt -> FOR name IN RANGE LPRN expr RPRN . COLON simple_stmts
+    (15) for_stmt -> FOR name IN RANGE LPRN expr RPRN . COLON suite
+
+    COLON           shift and go to state 75
+
+
+state 75
+
+    (14) for_stmt -> FOR name IN RANGE LPRN expr RPRN COLON . simple_stmts
+    (15) for_stmt -> FOR name IN RANGE LPRN expr RPRN COLON . suite
+    (16) simple_stmts -> . simple_stmt
+    (17) simple_stmts -> . simple_stmt SEMICOLON simple_stmts
+    (18) suite -> . NEWLINE INDENT stmtlist DEDENT
+    (7) simple_stmt -> . PRINT expr
+    (8) simple_stmt -> . PRINT expr print_expr
+    (11) simple_stmt -> . name ASSIGN expr
+    (19) name -> . NAME
+
+    NEWLINE         shift and go to state 60
+    PRINT           shift and go to state 3
+    NAME            shift and go to state 9
+
+    name                           shift and go to state 4
+    simple_stmt                    shift and go to state 59
+    suite                          shift and go to state 77
+    simple_stmts                   shift and go to state 76
+
+state 76
+
+    (14) for_stmt -> FOR name IN RANGE LPRN expr RPRN COLON simple_stmts .
+
+    NEWLINE         reduce using rule 14 (for_stmt -> FOR name IN RANGE LPRN expr RPRN COLON simple_stmts .)
+
+
+state 77
+
+    (15) for_stmt -> FOR name IN RANGE LPRN expr RPRN COLON suite .
+
+    NEWLINE         reduce using rule 15 (for_stmt -> FOR name IN RANGE LPRN expr RPRN COLON suite .)
+

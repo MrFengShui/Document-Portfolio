@@ -1,0 +1,7 @@
+{
+basic id;
+if (id==5) id=65;
+else id=75;
+while (id<=1000 && id>10)
+  id=id*2;
+}

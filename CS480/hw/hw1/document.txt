@@ -1,0 +1,217 @@
+CS 480	Winter 2016
+HW 1 (AST, Syntax-Directed Translation, Python-to-C translation, x86_64 Assembly)
+Due Saturday 1/16 at 11:59pm on Canvas.
+Late policy: You can submit ONLY one HW late by 24 hours (with no penalty).
+
+Need to turn in: hw1.py, report.txt
+
+Objectives: 
+
+(a) theoretical aspects: understand the two most important concepts in compilers:
+
+* Abstract Syntax Trees (ASTs)
+* Syntax-Directed Translation (SDT)
+
+(b) practical aspects: 
+
+* get familiarized with compiler.parse() and its AST representation compiler.ast.Node
+* recursively translate Python AST into C code, and make sure it compiles
+  and outputs the same result as the Python program
+
+In this and following assignments, we will be gradually translating successively
+larger subsets of Python into C. We will start with the simplest subset P_1
+which only contains integer expressions, variables and assignments, print 
+and simple for statements.
+
+For example, here is a program in P_1:
+
+x = 3
+y = 4 + x
+for i in range(y): print i+x, y
+
+To translate this program into an equivalent C code, you need to parse it into AST
+first. While the technical details of parsing are challenging (which will be studied
+in HW2-4), fortunately we have the "compiler" package in Python which does parsing 
+for us (we'll use it as a blackbox for now; HW3-4 implement subsets of it):
+
+In [6]: import compiler
+In [7]: compiler.parse("a=3")
+Out[7]: Module(None, Stmt([Assign([AssName('a', 'OP_ASSIGN')], Const(3))]))
+
+In [8]: compiler.parse("x = 3\ny= 4 + x\nfor i in range(y): print i+x")
+Out[8]: Module(None, Stmt([Assign([AssName('x', 'OP_ASSIGN')], Const(3)), Assign([AssName('y', 'OP_ASSIGN')], Add((Const(4), Name('x')))), For(AssName('i', 'OP_ASSIGN'), CallFunc(Name('range'), [Name('y')], None, None), Stmt([Printnl([Add((Name('i'), Name('x')))], None)]), None)]))
+
+The (extended) context-free grammar (CFG) of P_1 is:
+
+   program : module
+   module : stmt+
+   stmt : simple_stmt | for_stmt
+   simple_stmt : "print" expr ("," expr)*
+               | name "=" expr
+
+   for_stmt : "for" name "in" "range" "(" expr ")" ":" simple_stmt
+
+   expr : name
+        | decint
+        | "-" expr
+        | expr "+" expr
+        | "(" expr ")"
+
+=======================  YOUR WORK ==================================
+
+Ex1: Well, this grammar is not complete yet (missing definitions for name and decint).
+     Please define them (using CFG rules) in report.txt
+
+Ex2: To help get you started, I have provided an initial hw1.py which handles 
+     a small subset P_0 of P_1:
+
+       program : module
+       module : simple_stmt
+       simple_stmt : "print" expr
+       expr : decint
+            | "-" expr
+            | "(" expr ")"
+
+     In other words, P_0 can only handle a single print statement printing a single integer
+     with parentheses and unary negations but no variables.
+     You can translate a Python program in P_0 using my hw1.py:
+
+     $ echo "print (--5)" | python hw1.py > p0.c
+     $ clang p0.c
+     $ ./a.out 
+     5
+
+     Hint: you can take a look at p0.c to see if it makes sense.
+
+     Now extend hw1.py to handle P_1, which means you need to add support for
+     (each feature corresponds to one CFG rule, i.e., "syntax-directed"):
+
+     1) binary add (trivial)
+        expr : expr "+" expr
+     
+     2) multiple statements in a program (easy)     
+        module : stmt+
+
+     3) multiple items to print in a single print statement
+        simple_stmt : "print" expr ("," expr)*
+
+     4) variables in expressions (R-value)     
+        expr : name
+
+     5) variable assignments (L-value)   
+        simple_stmt : name "=" expr
+
+     6) simple for statements
+        for_stmt : "for" name "in" "range" "(" expr ")" ":" simple_stmt
+        
+     
+     Caveats/Hints:
+
+     * You only need to add about 30 lines of code.
+
+     * It is recommended you use clang instead of gcc to compile your generated C code
+       (esp. if you're working on a Linux machine such as COE/EECS servers because the 
+        standard gcc assumes an older version of C.)
+       
+       Make sure your generated C code compiles on flip.engr.oregonstate.edu using clang,
+       and it outputs exactly the same result as the orginal Python code.       
+
+       I've included a test.py for your convenience. Please verify:
+
+       $ cat test.py | python hw1.py > test.c
+       $ clang test.c
+       $ ./a.out > test.out_c
+       $ python test.py > test.out_py
+       $ diff test.out_c test.out_py
+
+       YOUR OWN PYTHON CODE MUST READ SOURCE PYTHON CODE FROM STDIN AND WRITE ONLY C CODE TO STDOUT.
+       YOUR OWN PYTHON CODE MUST RUN. 
+       YOU CAN ASSUME THE SOURCE PYTHON CODE IS SYNTACTICALLY CORRECT AND DOES NOT HAVE RUNTIME ERROR.
+
+     * There are some important differences between Python and C with respect to P_1:
+
+     a) You can redefine a variable in Python, but not in C:
+
+     	Python (OK):        
+	
+	a = 5               
+	a = 6   
+
+	C (compile error):
+	
+	int a = 5;
+	int a = 6;
+
+	C (compile error):
+	
+	int a = 5;
+	for (int a = 6; ...) ...            
+	
+     b) Python for loops leak loop variables, but not in C. 
+        In C, you get a compile error if you write
+     	
+	for (int i = 0; ... ) ...
+	printf("%d", i);
+	
+	since variable i is not leaked outside of the loop.
+	This is NOT the case in Python, which does not have "blocks" as do in many other
+	languages (C/C++, Java). The scoping unit in Python is a function.
+
+     c) Python range(x) returns a list [0, 1, ... , x-1], so 
+     
+	for i in range(10): ...
+	print i
+
+	will result in 9 instead of 10. So it's not accurate to translate it into:
+
+	for (int i = 0; i < 10; i++) ...
+	printf("%d", i);
+
+
+Ex3: Write a very short C program (non-trivially different from those on slides) and compile it.
+     Then use objdump (Linux) or otool (Mac) to disassemble the object code into Assembly.
+     Attach the C code, and the Assembly code with your essential comments (see slides for examples).
+
+================ END OF TECHNICAL WORK ===================
+
+PLEASE USE THE SKELETON report.txt FOR REPORTING.
+  	
+=============== REWARD FOR BUG REPORTING =================
+
+If you found a bug/typo in HWs or solutions, please report on Canvas.
+For each bug, the **first** person who reports it will be rewarded
+for course participation.
+
+==========================================================
+
+Appendix: compiler.ast.Node subtypes needed for HW1:
+
+class	  attribute	    type	notes for HW1
+----------------------------------------------------------
+Module:	  
+	  node		    Stmt	body of code
+Stmt:	  
+	  nodes		    [Node]	list of statements
+Printnl:  
+	  nodes		    [Node]	list of items to print
+Const:	  
+	  value		    int
+Add:	  
+	  left		    Node
+	  right		    Node
+UnarySub: 
+	  expr		    Node
+Name:	  
+	  name		    string	value of variable (R-value)
+AssName:  
+	  name		    string	reference of variable (L-value)
+Assign:	  
+	  nodes		    [Node]	only need nodes[0]
+	  expr		    Node	assigned value
+For:	  
+	  assign	    AssName	loop variable
+	  list		    CallFunc	loop range
+	  body		    Node
+CallFunc: 
+	  node		    Node	node.name is the function name
+	  args		    [Node]	list of arguments

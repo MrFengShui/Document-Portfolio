@@ -1,0 +1,179 @@
+CS 480	Winter 2016
+HW 2 (Syntax-Directed Translation II, Cython)
+[UPDATE] Due Sunday 1/24 at 11:59pm on Canvas.
+Late policy: You can submit ONLY one HW late by 24 hours (with no penalty).
+
+Need to turn in: hw2.py, report.txt
+
+In this assignment you will continue to translate a larger subset, P_2, of Python
+into C:
+
+   program : module
+   module : stmt+
+   stmt : (simple_stmt | if_stmt | for_stmt) NEWLINE
+
+   simple_stmt : "print" expr ("," expr)*
+               | int_name "=" int_expr
+               | bool_name "=" bool_expr
+             
+   expr : int_expr | bool_expr
+
+   if_stmt : "if" bool_expr ":" (simple_stmts | suite)
+
+   for_stmt : "for" name "in" "range" "(" int_expr ")" ":" (simple_stmts | suite)
+
+   simple_stmts : simple_stmt (";" simple_stmt)+
+   suite : NEWLINE INDENT stmt+ DEDENT
+
+   int_expr : int_name
+            | decint
+            | "-" int_expr
+            | int_expr "+" int_expr
+            | "(" int_expr ")"
+            | int_expr "if" bool_expr "else" int_expr
+
+   bool_expr : bool_name
+             | bool_expr "and" bool_expr
+             | bool_expr "or" bool_expr
+             | "not" bool_expr
+             | "(" bool_expr ")"
+             | int_expr (comp_op int_expr)+
+             | "True"
+             | "False"
+             | "(" bool_expr "if" bool_expr "else" bool_expr ")"   [UPDATE]
+
+   comp_op : '<' | '>' | '==' | '>=' | '<=' | '<>' | '!='
+
+
+But instead of continuing to use the deprecated "compiler" package, in this HW 
+switch to its modern replacement, the "ast" package, which is similar to "compiler"
+but easier to use with its built-in ast.dump() function. Compare:
+
+>>> import compiler
+>>> compiler.parse("if 3==4: print 5")
+Module(None, Stmt([If([(Compare(Const(3), [('==', Const(4))]), Stmt([Printnl([Const(5)], None)]))], None)]))
+
+This is hard to read, but if we look into the fields:
+
+>> compiler.parse("if 3==4: print 5").node.nodes[0].__dict__
+{'tests': [(Compare(Const(3), [('==', Const(4))]), Stmt([Printnl([Const(5)], None)]))], 'else_': None, 'lineno': 1}
+
+In other words "If.tests" is a list of tuples, where each tuple has a Compare, 
+and a Stmt.
+
+By contrast, the new ast package gives a more intuitive representation:
+
+>>> import ast
+>>> ast.dump(ast.parse("if 3==4: print 5"))
+'Module(body=[If(test=Compare(left=Num(n=3), ops=[Eq()], comparators=[Num(n=4)]), body=[Print(dest=None, values=[Num(n=5)], nl=True)], orelse=[])])’
+
+i.e., "If" has a field "test" and a field "body".
+
+Overall, this is more readable and more intuitive, the only drawback being you have
+to use ast.dump() otherwise the result from ast.parse() is just a "Module".
+
+We have included four (4) reference hw1 solutions rewritten using ast 
+instead of compiler (by the instructor and the three TAs).
+You can base your solution on any of these, or you can rewrite your own hw1.py.
+
+The overall structure (syntax-directed recursion) remains the same.
+
+[UPDATE]
+Resources for working with the new ast package (suggested by Thomas Olson):
+
+1. https://docs.python.org/2/library/ast.html
+2. https://greentreesnakes.readthedocs.org/en/latest/
+
+=======================  YOUR WORK ==================================
+
+Ex1: (5 pts)
+     Implement P_2.     
+     
+     [UPDATE] Restrictions on testcases (these make your life a lot easier!):
+     a) no high-precision integers
+     b) no variable in Python is a keyword in C
+     c) no reassignment of a variable to different type
+
+Ex2: (EXTRA CREDIT, 1 pt)
+     What if we mix int_name and bool_name?     
+     Can you detect type error where an int_name is used in bool context,
+     or a bool_name is used in an int context?
+
+     [UPDATE] For example, your code should have a non-zero exit code on these:
+------
+print 1 if True else True
+------
+if 1 > True: print 1
+------
+a = 1
+b = False
+if a != b: print True
+------
+a = 0
+b = not a
+------
+a = 1
+b = True if False or a else False
+------
+a = (2 > 3) if True else 2
+------ 
+
+Ex3: (3 pts) 
+     As discussed in class, what we have been doing so far is similar to the 
+     famous Cython project which also translates a subset of Python into C,
+     although Cython's subset is much larger than ours.
+
+     Write a very short (2-3 lines) but kinda "pathetic" Python program 
+     (e.g., to similar those corner cases for HW1), and Cython it.
+     Make sure the resulting C code compiles and runs.
+
+     (a) What are the command-line commands you used (including C compiling)?
+     (b) Include your Python code and the most important lines 
+         from the resulting Cython translation, with your key comments.
+     (c) What are the most striking differences you noticed between 
+         the Cython solution and your solution? 
+	 
+     (d) [EXTRA CREDIT, 1 pt]
+         It looks like the Cython can handle almost everything in Python...
+	 but actually NO.
+	 List some rather basic Python features that Cython can not handle.
+
+	 [UPDATE] Just name two such features is enough for full credit.
+
+================ END OF TECHNICAL WORK ===================
+
+PLEASE USE THE SKELETON report.txt FOR REPORTING.
+DO NOT FORGET THE DEBRIEFING SECTION.
+  	
+=============== REWARDS / GRADING POLICIES ===============
+
+0. If you found a bug/typo in HWs or solutions, please report on Canvas.
+   For each bug, the **first** person who reports it will be rewarded.
+
+1. The basic testcases released with this HW will make up 55% of the grade
+   for Ex1. There will be other testcases even easier than these basic cases,
+   (to give partial credits to people who did not solve the basic cases),
+   and those will make up ~15% of the grade for Ex1. In other words, if you
+   solved the basic cases, your Ex1 grade will in general be at least 70%.
+
+2. We will release a reference solution by Wednesday (only .pyc) which can 
+   help you deal with testcases.
+
+3. Proposing a testcase (on Canvas) that is conceptually different from 
+   existing cases will be rewarded.
+
+4. It is likely that we will also make some other testcases, and only release
+   them after the submission deadline. This means passing all public testcases
+   available before the deadline DOES NOT guarantee 100% on Ex1, but very close.
+   (THIS IS THE GOOGLE-CODEJAM WAY.)
+
+5. If your testcase breaks our reference solution, the reward will be doubled.
+
+6. We will release the excellent student solutions that have passed all testcases.
+
+7. You can continue to propose testcases after the submission deadline, and 
+   if your testcase breaks any of the excellent student solutions we posted,
+   the reward will also be doubled. (THIS IS THE TOPCODER WAY.)
+   However, the grades of those solutions will NOT be changed.
+   (THIS IS _NOT_ THE TOPCODER WAY).
+

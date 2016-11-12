@@ -1,0 +1,79 @@
+CS 480 HW3 Report
+Last Name: Luan
+First Name: Songjian
+ONID login: luans@oregonstate.edu
+
+Ex1: P_2 in pure CFG notation:
+
+# stmt : (simple_stmt | if_stmt | for_stmt) NEWLINE
+
+# simple_stmt : "print" expr ("," expr)*
+# 			| name "=" expr
+
+# if_stmt : "if" expr ":" (simple_stmts | suite)
+# for_stmt : "for" name "in" "range" "(" expr ")" ":" (simple_stmts | suite)
+
+# simple_stmts : simple_stmt (";" simple_stmt)+
+# suite : NEWLINE INDENT stmt+ DEDENT
+
+# expr : name
+# 		| decint
+# 		| "-" expr
+#		| expr "+" expr
+# 		| "(" expr ")"
+#		| expr "if" expr "else" expr
+#		| expr "and" expr
+#		| expr "or" expr
+#		| "not" expr
+#		| expr (comp_op expr)+
+#		| "True"
+#		| "False"
+#		| expr "if" expr "else" expr
+
+# comp_op : '<' | '>' | '==' | '>=' | '<=' | '<>' | '!='
+
+Ex2: What difficulties did you encounter?
+
+This assignment is much difficut than two homewords before. I have encountered to 
+do comparsion, assign, if statment and expression, and so on. When I try to solve 
+each problem, it always shows solving this problem and then it doesn't satisfy another
+problem. The most difficut thing is to implement comparsion. 
+
+Ex2a: How was INDENT/DEDENT implemented?
+
+There is an example supporting that. I don't need to worry about it.
+
+Ex2b: [EXTRA CREDIT] Any smarter way for the above than what I put on the slides?
+
+
+Ex3: What difficulties did you encounter?
+
+precedure of each token. find out each expression's and statement's path in recursion.
+
+     Any comments on PLY?
+
+
+
+Debriefing questions:
+
+1. Approximately how many hours did you spend on this assignment?
+
+more than one week
+
+2. Would you rate it as easy, moderate, or difficult?
+
+difficult
+
+3. Did you work on it mostly alone, or mostly with other people?
+   Note: Only high-level discussions are allowed. 
+         Include the names of the people you discussed with.
+
+always alone
+
+4. How deeply do you feel you understand the material it covers (0%–100%)? 
+
+50%
+
+5. Any other comments (on the instruction)?
+
+no

@@ -1,0 +1,159 @@
+CS 480 HW2 Report
+Last Name: Luan
+First Name: Songjian
+ONID login: luans@oregonstate.edu
+
+Ex1: 
+
+Which features (in P_2 \ P_1) did you successfully implemented?
+
+I have implemented P_2 successfully, although I meet quite a few difficulties.
+In P_2, I almost finish all features, such as if, loop, nested loop. 
+
+Which features (in P_2 \ P_1) did you attempt but failed? 
+(remember to comment out those lines so that your program still runs...)
+
+I try to do assiged variables which is boolean and print it to 'True' or 'False'.
+But I fail many times. 
+
+
+Ex2: (Extra Credit)
+     How did you implement this checking, if you succeeded at it?
+
+After finishing part of code, I will run sample test files to check my python code.
+If there are some error or incorrect places, I fix those part until my test results
+are correct. 
+
+Ex3:
+
+(a) What are the command-line commands you used (including C compiling)?
+
+I just use clang without any command-line commands to run and check outputing results.
+
+(b) Include your very short but kinda "pathetic" Python code 
+
+limit=10
+for i in range(limit): limit = 1000
+print i
+
+    and the most important lines 
+    from the resulting Cython translation, with your key comments.
+
+#include "compile.h"
+#include "frameobject.h"
+#include "traceback.h"
+static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
+            const char *funcname, int c_line,
+            int py_line, const char *filename) {
+    PyCodeObject *py_code = 0;
+    PyObject *py_srcfile = 0;
+    PyObject *py_funcname = 0;
+    #if PY_MAJOR_VERSION < 3
+    py_srcfile = PyString_FromString(filename);
+    #else
+    py_srcfile = PyUnicode_FromString(filename);
+    #endif
+    if (!py_srcfile) goto bad;
+    if (c_line) {
+        #if PY_MAJOR_VERSION < 3
+        py_funcname = PyString_FromFormat( "%s (%s:%d)", funcname, __pyx_cfilenm, c_line);
+        #else
+        py_funcname = PyUnicode_FromFormat( "%s (%s:%d)", funcname, __pyx_cfilenm, c_line);
+        #endif
+    }
+    else {
+        #if PY_MAJOR_VERSION < 3
+        py_funcname = PyString_FromString(funcname);
+        #else
+        py_funcname = PyUnicode_FromString(funcname);
+        #endif
+    }
+    if (!py_funcname) goto bad;
+    py_code = __Pyx_PyCode_New(
+        0,
+        0,
+        0,
+        0,
+        0,
+        __pyx_empty_bytes, /*PyObject *code,*/
+        __pyx_empty_tuple, /*PyObject *consts,*/
+        __pyx_empty_tuple, /*PyObject *names,*/
+        __pyx_empty_tuple, /*PyObject *varnames,*/
+        __pyx_empty_tuple, /*PyObject *freevars,*/
+        __pyx_empty_tuple, /*PyObject *cellvars,*/
+        py_srcfile,   /*PyObject *filename,*/
+        py_funcname,  /*PyObject *name,*/
+        py_line,
+        __pyx_empty_bytes  /*PyObject *lnotab*/
+    );
+    Py_DECREF(py_srcfile);
+    Py_DECREF(py_funcname);
+    return py_code;
+bad:
+    Py_XDECREF(py_srcfile);
+    Py_XDECREF(py_funcname);
+    return NULL;
+}
+static void __Pyx_AddTraceback(const char *funcname, int c_line,
+                               int py_line, const char *filename) {
+    PyCodeObject *py_code = 0;
+    PyFrameObject *py_frame = 0;
+    py_code = __pyx_find_code_object(c_line ? c_line : py_line);
+    if (!py_code) {
+        py_code = __Pyx_CreateCodeObjectForTraceback(
+            funcname, c_line, py_line, filename);
+        if (!py_code) goto bad;
+        __pyx_insert_code_object(c_line ? c_line : py_line, py_code);
+    }
+    py_frame = PyFrame_New(
+        PyThreadState_GET(), /*PyThreadState *tstate,*/
+        py_code,             /*PyCodeObject *code,*/
+        __pyx_d,      /*PyObject *globals,*/
+        0                    /*PyObject *locals*/
+    );
+    if (!py_frame) goto bad;
+    py_frame->f_lineno = py_line;
+    PyTraceBack_Here(py_frame);
+bad:
+    Py_XDECREF(py_code);
+    Py_XDECREF(py_frame);
+}
+
+
+(c) What are the most striking differences you noticed between 
+    the Cython solution and your solution? 
+	 
+There are too many differences between my solutions and cython solutions. After look up
+cython code, there are so many terrible lines transfered. Most time, those lines are not
+useful. 
+
+(d) [EXTRA CREDIT, 1 pt)
+    List some rather basic Python features that Cython can not handle.
+
+    1. dictionary
+    2. parallel return value
+    3. list
+
+Debriefing questions:
+
+1. Approximately how many hours did you spend on this assignment?
+
+3 days
+
+2. Would you rate it as easy, moderate, or difficult?
+
+between moderate and difficult
+
+3. Did you work on it mostly alone, or mostly with other people?
+   Note: Only high-level discussions are allowed. 
+         Include the names of the people you discussed with.
+
+always alone
+
+4. How deeply do you feel you understand the material it covers (0%–100%)? 
+
+90%
+
+5. Any other comments (on the instruction)?
+
+no

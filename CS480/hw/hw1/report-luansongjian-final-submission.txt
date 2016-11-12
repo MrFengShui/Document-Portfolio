@@ -1,0 +1,164 @@
+CS 480 HW1 Report
+Last Name: LUAN
+First Name: SONGJIAN
+ONID login: luans@oregonstate.edu
+
+Ex1:
+
+	program : module
+	module : stmt+
+	stmt : simple_stmt | for_stmt
+	simple_stmt : "print" expr ("," expr)*
+               | name "=" expr
+
+	for_stmt : "for" name "in" "range" "(" expr ")" ":" simple_stmt
+
+	expr : name
+		  | decint
+		  | "-" expr
+		  | "+" expr
+      | expr "+" expr
+      | expr "-" expr
+      | expr "*" expr
+      | expr "/" expr
+      | "(" expr ")"
+
+Ex2: Answer the following questions:
+
+* Which features did you successfully implement?
+
+Bacically, all CFG above are implmented successfully, except "(" expr ")". During
+doing print, I meet some difficulties to solve format for multiple arguments, especially "for" and "print". In addition, I have defined another function to solve print format. 
+
+* Which features did you attempt but not fully succeeded at?
+
+I attempted to do "(" expr ")" but failed. Because it always added "()" to all
+"+" exprs. Some of them are unexpected. So, I give up to solve it.
+
+* What did you learn from this HW? (be brief)
+
+I heard about module compiler before, but I didn't use that before. Now, I have
+know how python to read python file and build a tree for each assignment, statement
+, and expression. It is a little different from solving by cyk algorithm. 
+
+Ex3:
+
+C code (very short):
+********************************************************************************
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[])
+{
+	int x = 3;
+	int y = 4 + x;
+	x = 2 + 1;
+	printf("%d\n", - x + y);
+	int i = 5;
+	for(i = 0; i < x + y; i ++)
+	{
+		printf("%d %d\n", i + x, i);
+	}
+	int s = 0;
+	for(i = 0; i < 10; i ++)
+	{
+		s = s + i;
+	}
+	printf("%d %d %d\n", s, i, y);
+
+	return EXIT_SUCCESS;
+}
+********************************************************************************
+Assembly code (only the main function) with your comments:
+********************************************************************************
+00000000004004f0 <main>:
+  4004f0:	55                   	push   %rbp
+  4004f1:	48 89 e5             	mov    %rsp,%rbp
+  4004f4:	48 83 ec 30          	sub    $0x30,%rsp
+  4004f8:	48 b8 7a 06 40 00 00 	movabs $0x40067a,%rax
+  4004ff:	00 00 00 
+  400502:	31 c9                	xor    %ecx,%ecx
+  400504:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%rbp)
+  40050b:	89 7d f8             	mov    %edi,-0x8(%rbp)
+  40050e:	48 89 75 f0          	mov    %rsi,-0x10(%rbp)
+  400512:	c7 45 ec 03 00 00 00 	movl   $0x3,-0x14(%rbp)
+  400519:	8b 7d ec             	mov    -0x14(%rbp),%edi
+  40051c:	81 c7 04 00 00 00    	add    $0x4,%edi
+  400522:	89 7d e8             	mov    %edi,-0x18(%rbp)
+  400525:	c7 45 ec 03 00 00 00 	movl   $0x3,-0x14(%rbp)
+  40052c:	2b 4d ec             	sub    -0x14(%rbp),%ecx
+  40052f:	03 4d e8             	add    -0x18(%rbp),%ecx
+  400532:	48 89 c7             	mov    %rax,%rdi
+  400535:	89 ce                	mov    %ecx,%esi
+  400537:	b0 00                	mov    $0x0,%al
+  400539:	e8 82 fe ff ff       	callq  4003c0 <printf@plt>
+  40053e:	c7 45 e4 05 00 00 00 	movl   $0x5,-0x1c(%rbp)
+  400545:	c7 45 e4 00 00 00 00 	movl   $0x0,-0x1c(%rbp)
+  40054c:	89 45 dc             	mov    %eax,-0x24(%rbp)
+  40054f:	8b 45 e4             	mov    -0x1c(%rbp),%eax
+  400552:	8b 4d ec             	mov    -0x14(%rbp),%ecx
+  400555:	03 4d e8             	add    -0x18(%rbp),%ecx
+  400558:	39 c8                	cmp    %ecx,%eax
+  40055a:	0f 8d 2f 00 00 00    	jge    40058f <main+0x9f>
+  400560:	48 bf 77 06 40 00 00 	movabs $0x400677,%rdi
+  400567:	00 00 00 
+  40056a:	8b 45 e4             	mov    -0x1c(%rbp),%eax
+  40056d:	03 45 ec             	add    -0x14(%rbp),%eax
+  400570:	8b 55 e4             	mov    -0x1c(%rbp),%edx
+  400573:	89 c6                	mov    %eax,%esi
+  400575:	b0 00                	mov    $0x0,%al
+  400577:	e8 44 fe ff ff       	callq  4003c0 <printf@plt>
+  40057c:	89 45 d8             	mov    %eax,-0x28(%rbp)
+  40057f:	8b 45 e4             	mov    -0x1c(%rbp),%eax
+  400582:	05 01 00 00 00       	add    $0x1,%eax
+  400587:	89 45 e4             	mov    %eax,-0x1c(%rbp)
+  40058a:	e9 c0 ff ff ff       	jmpq   40054f <main+0x5f>
+  40058f:	c7 45 e0 00 00 00 00 	movl   $0x0,-0x20(%rbp)
+  400596:	c7 45 e4 00 00 00 00 	movl   $0x0,-0x1c(%rbp)
+  40059d:	81 7d e4 0a 00 00 00 	cmpl   $0xa,-0x1c(%rbp)
+  4005a4:	0f 8d 19 00 00 00    	jge    4005c3 <main+0xd3>
+  4005aa:	8b 45 e0             	mov    -0x20(%rbp),%eax
+  4005ad:	03 45 e4             	add    -0x1c(%rbp),%eax
+  4005b0:	89 45 e0             	mov    %eax,-0x20(%rbp)
+  4005b3:	8b 45 e4             	mov    -0x1c(%rbp),%eax
+  4005b6:	05 01 00 00 00       	add    $0x1,%eax
+  4005bb:	89 45 e4             	mov    %eax,-0x1c(%rbp)
+  4005be:	e9 da ff ff ff       	jmpq   40059d <main+0xad>
+  4005c3:	48 bf 74 06 40 00 00 	movabs $0x400674,%rdi
+  4005ca:	00 00 00 
+  4005cd:	8b 75 e0             	mov    -0x20(%rbp),%esi
+  4005d0:	8b 55 e4             	mov    -0x1c(%rbp),%edx
+  4005d3:	8b 4d e8             	mov    -0x18(%rbp),%ecx
+  4005d6:	b0 00                	mov    $0x0,%al
+  4005d8:	e8 e3 fd ff ff       	callq  4003c0 <printf@plt>
+  4005dd:	31 c9                	xor    %ecx,%ecx
+  4005df:	89 45 d4             	mov    %eax,-0x2c(%rbp)
+  4005e2:	89 c8                	mov    %ecx,%eax
+  4005e4:	48 83 c4 30          	add    $0x30,%rsp
+  4005e8:	5d                   	pop    %rbp
+  4005e9:	c3                   	retq   
+  4005ea:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+********************************************************************************
+Debriefing questions:
+
+1. Approximately how many hours did you spend on this assignment?
+
+it has spent whole afternoon to finish and whole evening plus morning to update
+
+2. Would you rate it as easy, moderate, or difficult?
+
+moderate
+
+3. Did you work on it mostly alone, or mostly with other people?
+   Note: Only high-level discussions are allowed. 
+         Include the names of the people you discussed with.
+
+always lonely
+
+4. How deeply do you feel you understand the material it covers (0%–100%)? 
+
+95%
+
+5. Any other comments (on the instruction)?
+
+no

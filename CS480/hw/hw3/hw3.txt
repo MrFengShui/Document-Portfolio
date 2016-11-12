@@ -1,0 +1,117 @@
+CS 480	Winter 2016
+HW 3 (lex/yacc)
+Due Saturday 1/30 at 11:59pm on Canvas.
+Late policy: You can submit ONLY one HW late by 24 hours (with no penalty).
+
+Need to turn in: hw3.py, report.txt
+
+In this and the following HW we will gradually build a replacement for ast.parse().
+
+In this HW you will build a lexer and a parser for P_2 using PLY, the Python 
+re-implementation of the classical compiler tools lex and yacc from the 1970s.
+
+P_2 is copied here for your convenience:
+
+	 program : module
+	 module : stmt+
+	 stmt : (simple_stmt | if_stmt | for_stmt) NEWLINE
+
+	 simple_stmt : "print" expr ("," expr)*
+				| int_name "=" int_expr
+				| bool_name "=" bool_expr
+						 
+	 expr : int_expr | bool_expr
+
+	 if_stmt : "if" bool_expr ":" (simple_stmts | suite)
+
+	 for_stmt : "for" name "in" "range" "(" int_expr ")" ":" (simple_stmts | suite)
+
+	 simple_stmts : simple_stmt (";" simple_stmt)+
+	 suite : NEWLINE INDENT stmt+ DEDENT
+
+	 int_expr : int_name
+			| decint
+			| "-" int_expr
+			| int_expr "+" int_expr
+			| "(" int_expr ")"
+			| int_expr "if" bool_expr "else" int_expr
+
+	 bool_expr : bool_name
+			| bool_expr "and" bool_expr
+			| bool_expr "or" bool_expr
+			| "not" bool_expr
+			| "(" bool_expr ")"
+			| int_expr (comp_op int_expr)+
+			| "True"
+			| "False"
+			| "(" bool_expr "if" bool_expr "else" bool_expr ")"   
+
+	 comp_op : '<' | '>' | '==' | '>=' | '<=' | '<>' | '!='
+
+
+The result of your work should be used as a drop-in replacement for ast.parse().
+
+Ex1. (1 pt)
+		 Note that yacc (written in 1973 before lex) does not accept extended CFG rules.     
+		 So you need to rewrite P_2 as a pure CFG.
+		 The answer to this part will be used in Ex3.
+
+Ex2. (2 pts)
+		 Implement a lexer for P_2. 
+		 To make your life a lot easier I have included solutions to the two major
+		 technical challenges in this part (see solutions on weeks2-3 slides):
+
+		 (a) Python key words (should not be confused with variable names)
+		 (b) INDENT and DEDENT (this part is rather difficult)
+		 
+		 Your job is simply to put together these pieces and fill in the remaining details.
+
+		 Note that I wrapped lexer in a class MyLexer to have more fine-grained control.
+		 The solution to INDENT/DEDENT also requires this low-level control.
+
+		 HINT: I recommend you finish a lexer/parser for P_1 first, which does not 
+					 have issues such as INDENT/DEDENT, and you can use hw1_ast_liang.py for testing.
+
+Ex2a. (1 pt)
+			Describe in your own words how INDENT/DEDENT is implemented.
+
+Ex2b. [Extra Credit, 1pt]
+			Is there a smarter way to implement INDENT/DEDENT? 
+			You must implement the starter way in order to receive credit for this part.
+
+Ex3. (4 pts)
+		 Implement a parser for P_2.
+		 The result should be then used with your HW2 solutions (or a reference solution)
+		 to produce C translations for P_2.
+
+		 To get you started I have included the complete solutions to Ex2 and Ex3 for 
+		 a simple grammar P_0.5 in hw3.py:
+
+			 program : module
+			 module : stmt+
+			 stmt : "print" expr NEWLINE
+			 expr : decint
+						| expr "+" expr
+	
+		 You can test it this way:
+	 
+			 echo -e "print -55+6\nprint 77" | python hw3.py
+
+		 You should replace "import hw1_ast_liang" with your HW2 solution or a correct one,
+		 onceyou finish P_1 and are ready to move on to P_2.
+			
+		 You can use testcases from HW2 for testing.
+		 For a syntactically wrong program your code should have a non-zero exit code
+		 (the p_error() and t_error() functions should be enough).
+
+		 HINT: Again, I recommend you finish a lexer/parser for P_1 first, which does not 
+					 have issues such as INDENT/DEDENT, and you can use hw1_ast_liang.py for testing.
+
+		 Finishing P_1 (passing all hw1 testcases) will be 60% of the grade in both Ex2 and Ex3.
+		 
+================ END OF TECHNICAL WORK ===================
+
+PLEASE USE THE SKELETON report.txt FOR REPORTING.
+DO NOT FORGET THE DEBRIEFING SECTION.
+
+OTHER POLICIES GENERALLY FOLLOW HW2.

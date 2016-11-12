@@ -1,0 +1,387 @@
+Created by PLY version 3.8 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> module
+Rule 1     module -> stmts
+Rule 2     stmts -> stmt stmt_ext
+Rule 3     stmt_ext -> <empty>
+Rule 4     stmt_ext -> stmts
+Rule 5     stmt -> small_stmts NEWLINE
+Rule 6     stmt -> while_stmt NEWLINE
+Rule 7     small_stmts -> small_stmt small_ext
+Rule 8     small_ext -> <empty>
+Rule 9     small_ext -> small_stmts
+Rule 10    small_stmt -> assign_stmt
+Rule 11    small_stmt -> print_stmt
+Rule 12    assign_stmt -> NAME assign_ext
+Rule 13    assign_ext -> ASS_EQ INT
+Rule 14    assign_ext -> AUG_ASSIGN_PLUS INT
+Rule 15    print_stmt -> PRINT NAME
+Rule 16    while_stmt -> WHILE cmp_expr COLON NEWLINE INDENT stmts DEDENT
+Rule 17    cmp_expr -> NAME LT INT
+
+Terminals, with rules where they appear
+
+ASS_EQ               : 13
+AUG_ASSIGN_PLUS      : 14
+COLON                : 16
+DEDENT               : 16
+INDENT               : 16
+INT                  : 13 14 17
+LT                   : 17
+NAME                 : 12 15 17
+NEWLINE              : 5 6 16
+PRINT                : 15
+WHILE                : 16
+error                : 
+
+Nonterminals, with rules where they appear
+
+assign_ext           : 12
+assign_stmt          : 10
+cmp_expr             : 16
+module               : 0
+print_stmt           : 11
+small_ext            : 7
+small_stmt           : 7
+small_stmts          : 5 9
+stmt                 : 2
+stmt_ext             : 2
+stmts                : 1 4 16
+while_stmt           : 6
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . module
+    (1) module -> . stmts
+    (2) stmts -> . stmt stmt_ext
+    (5) stmt -> . small_stmts NEWLINE
+    (6) stmt -> . while_stmt NEWLINE
+    (7) small_stmts -> . small_stmt small_ext
+    (16) while_stmt -> . WHILE cmp_expr COLON NEWLINE INDENT stmts DEDENT
+    (10) small_stmt -> . assign_stmt
+    (11) small_stmt -> . print_stmt
+    (12) assign_stmt -> . NAME assign_ext
+    (15) print_stmt -> . PRINT NAME
+
+    WHILE           shift and go to state 4
+    NAME            shift and go to state 1
+    PRINT           shift and go to state 10
+
+    print_stmt                     shift and go to state 2
+    stmts                          shift and go to state 3
+    stmt                           shift and go to state 5
+    assign_stmt                    shift and go to state 6
+    small_stmt                     shift and go to state 7
+    while_stmt                     shift and go to state 8
+    module                         shift and go to state 9
+    small_stmts                    shift and go to state 11
+
+state 1
+
+    (12) assign_stmt -> NAME . assign_ext
+    (13) assign_ext -> . ASS_EQ INT
+    (14) assign_ext -> . AUG_ASSIGN_PLUS INT
+
+    ASS_EQ          shift and go to state 13
+    AUG_ASSIGN_PLUS shift and go to state 14
+
+    assign_ext                     shift and go to state 12
+
+state 2
+
+    (11) small_stmt -> print_stmt .
+
+    NAME            reduce using rule 11 (small_stmt -> print_stmt .)
+    PRINT           reduce using rule 11 (small_stmt -> print_stmt .)
+    NEWLINE         reduce using rule 11 (small_stmt -> print_stmt .)
+
+
+state 3
+
+    (1) module -> stmts .
+
+    $end            reduce using rule 1 (module -> stmts .)
+
+
+state 4
+
+    (16) while_stmt -> WHILE . cmp_expr COLON NEWLINE INDENT stmts DEDENT
+    (17) cmp_expr -> . NAME LT INT
+
+    NAME            shift and go to state 15
+
+    cmp_expr                       shift and go to state 16
+
+state 5
+
+    (2) stmts -> stmt . stmt_ext
+    (3) stmt_ext -> .
+    (4) stmt_ext -> . stmts
+    (2) stmts -> . stmt stmt_ext
+    (5) stmt -> . small_stmts NEWLINE
+    (6) stmt -> . while_stmt NEWLINE
+    (7) small_stmts -> . small_stmt small_ext
+    (16) while_stmt -> . WHILE cmp_expr COLON NEWLINE INDENT stmts DEDENT
+    (10) small_stmt -> . assign_stmt
+    (11) small_stmt -> . print_stmt
+    (12) assign_stmt -> . NAME assign_ext
+    (15) print_stmt -> . PRINT NAME
+
+    $end            reduce using rule 3 (stmt_ext -> .)
+    DEDENT          reduce using rule 3 (stmt_ext -> .)
+    WHILE           shift and go to state 4
+    NAME            shift and go to state 1
+    PRINT           shift and go to state 10
+
+    print_stmt                     shift and go to state 2
+    stmt_ext                       shift and go to state 17
+    stmts                          shift and go to state 18
+    stmt                           shift and go to state 5
+    assign_stmt                    shift and go to state 6
+    small_stmt                     shift and go to state 7
+    while_stmt                     shift and go to state 8
+    small_stmts                    shift and go to state 11
+
+state 6
+
+    (10) small_stmt -> assign_stmt .
+
+    NAME            reduce using rule 10 (small_stmt -> assign_stmt .)
+    PRINT           reduce using rule 10 (small_stmt -> assign_stmt .)
+    NEWLINE         reduce using rule 10 (small_stmt -> assign_stmt .)
+
+
+state 7
+
+    (7) small_stmts -> small_stmt . small_ext
+    (8) small_ext -> .
+    (9) small_ext -> . small_stmts
+    (7) small_stmts -> . small_stmt small_ext
+    (10) small_stmt -> . assign_stmt
+    (11) small_stmt -> . print_stmt
+    (12) assign_stmt -> . NAME assign_ext
+    (15) print_stmt -> . PRINT NAME
+
+    NEWLINE         reduce using rule 8 (small_ext -> .)
+    NAME            shift and go to state 1
+    PRINT           shift and go to state 10
+
+    small_stmt                     shift and go to state 7
+    assign_stmt                    shift and go to state 6
+    small_ext                      shift and go to state 19
+    print_stmt                     shift and go to state 2
+    small_stmts                    shift and go to state 20
+
+state 8
+
+    (6) stmt -> while_stmt . NEWLINE
+
+    NEWLINE         shift and go to state 21
+
+
+state 9
+
+    (0) S' -> module .
+
+
+
+state 10
+
+    (15) print_stmt -> PRINT . NAME
+
+    NAME            shift and go to state 22
+
+
+state 11
+
+    (5) stmt -> small_stmts . NEWLINE
+
+    NEWLINE         shift and go to state 23
+
+
+state 12
+
+    (12) assign_stmt -> NAME assign_ext .
+
+    NAME            reduce using rule 12 (assign_stmt -> NAME assign_ext .)
+    PRINT           reduce using rule 12 (assign_stmt -> NAME assign_ext .)
+    NEWLINE         reduce using rule 12 (assign_stmt -> NAME assign_ext .)
+
+
+state 13
+
+    (13) assign_ext -> ASS_EQ . INT
+
+    INT             shift and go to state 24
+
+
+state 14
+
+    (14) assign_ext -> AUG_ASSIGN_PLUS . INT
+
+    INT             shift and go to state 25
+
+
+state 15
+
+    (17) cmp_expr -> NAME . LT INT
+
+    LT              shift and go to state 26
+
+
+state 16
+
+    (16) while_stmt -> WHILE cmp_expr . COLON NEWLINE INDENT stmts DEDENT
+
+    COLON           shift and go to state 27
+
+
+state 17
+
+    (2) stmts -> stmt stmt_ext .
+
+    DEDENT          reduce using rule 2 (stmts -> stmt stmt_ext .)
+    $end            reduce using rule 2 (stmts -> stmt stmt_ext .)
+
+
+state 18
+
+    (4) stmt_ext -> stmts .
+
+    $end            reduce using rule 4 (stmt_ext -> stmts .)
+    DEDENT          reduce using rule 4 (stmt_ext -> stmts .)
+
+
+state 19
+
+    (7) small_stmts -> small_stmt small_ext .
+
+    NEWLINE         reduce using rule 7 (small_stmts -> small_stmt small_ext .)
+
+
+state 20
+
+    (9) small_ext -> small_stmts .
+
+    NEWLINE         reduce using rule 9 (small_ext -> small_stmts .)
+
+
+state 21
+
+    (6) stmt -> while_stmt NEWLINE .
+
+    WHILE           reduce using rule 6 (stmt -> while_stmt NEWLINE .)
+    NAME            reduce using rule 6 (stmt -> while_stmt NEWLINE .)
+    PRINT           reduce using rule 6 (stmt -> while_stmt NEWLINE .)
+    DEDENT          reduce using rule 6 (stmt -> while_stmt NEWLINE .)
+    $end            reduce using rule 6 (stmt -> while_stmt NEWLINE .)
+
+
+state 22
+
+    (15) print_stmt -> PRINT NAME .
+
+    NAME            reduce using rule 15 (print_stmt -> PRINT NAME .)
+    PRINT           reduce using rule 15 (print_stmt -> PRINT NAME .)
+    NEWLINE         reduce using rule 15 (print_stmt -> PRINT NAME .)
+
+
+state 23
+
+    (5) stmt -> small_stmts NEWLINE .
+
+    WHILE           reduce using rule 5 (stmt -> small_stmts NEWLINE .)
+    NAME            reduce using rule 5 (stmt -> small_stmts NEWLINE .)
+    PRINT           reduce using rule 5 (stmt -> small_stmts NEWLINE .)
+    DEDENT          reduce using rule 5 (stmt -> small_stmts NEWLINE .)
+    $end            reduce using rule 5 (stmt -> small_stmts NEWLINE .)
+
+
+state 24
+
+    (13) assign_ext -> ASS_EQ INT .
+
+    NAME            reduce using rule 13 (assign_ext -> ASS_EQ INT .)
+    PRINT           reduce using rule 13 (assign_ext -> ASS_EQ INT .)
+    NEWLINE         reduce using rule 13 (assign_ext -> ASS_EQ INT .)
+
+
+state 25
+
+    (14) assign_ext -> AUG_ASSIGN_PLUS INT .
+
+    NAME            reduce using rule 14 (assign_ext -> AUG_ASSIGN_PLUS INT .)
+    PRINT           reduce using rule 14 (assign_ext -> AUG_ASSIGN_PLUS INT .)
+    NEWLINE         reduce using rule 14 (assign_ext -> AUG_ASSIGN_PLUS INT .)
+
+
+state 26
+
+    (17) cmp_expr -> NAME LT . INT
+
+    INT             shift and go to state 28
+
+
+state 27
+
+    (16) while_stmt -> WHILE cmp_expr COLON . NEWLINE INDENT stmts DEDENT
+
+    NEWLINE         shift and go to state 29
+
+
+state 28
+
+    (17) cmp_expr -> NAME LT INT .
+
+    COLON           reduce using rule 17 (cmp_expr -> NAME LT INT .)
+
+
+state 29
+
+    (16) while_stmt -> WHILE cmp_expr COLON NEWLINE . INDENT stmts DEDENT
+
+    INDENT          shift and go to state 30
+
+
+state 30
+
+    (16) while_stmt -> WHILE cmp_expr COLON NEWLINE INDENT . stmts DEDENT
+    (2) stmts -> . stmt stmt_ext
+    (5) stmt -> . small_stmts NEWLINE
+    (6) stmt -> . while_stmt NEWLINE
+    (7) small_stmts -> . small_stmt small_ext
+    (16) while_stmt -> . WHILE cmp_expr COLON NEWLINE INDENT stmts DEDENT
+    (10) small_stmt -> . assign_stmt
+    (11) small_stmt -> . print_stmt
+    (12) assign_stmt -> . NAME assign_ext
+    (15) print_stmt -> . PRINT NAME
+
+    WHILE           shift and go to state 4
+    NAME            shift and go to state 1
+    PRINT           shift and go to state 10
+
+    print_stmt                     shift and go to state 2
+    stmts                          shift and go to state 31
+    stmt                           shift and go to state 5
+    assign_stmt                    shift and go to state 6
+    small_stmt                     shift and go to state 7
+    while_stmt                     shift and go to state 8
+    small_stmts                    shift and go to state 11
+
+state 31
+
+    (16) while_stmt -> WHILE cmp_expr COLON NEWLINE INDENT stmts . DEDENT
+
+    DEDENT          shift and go to state 32
+
+
+state 32
+
+    (16) while_stmt -> WHILE cmp_expr COLON NEWLINE INDENT stmts DEDENT .
+
+    NEWLINE         reduce using rule 16 (while_stmt -> WHILE cmp_expr COLON NEWLINE INDENT stmts DEDENT .)
+

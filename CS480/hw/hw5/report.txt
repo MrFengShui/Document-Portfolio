@@ -1,0 +1,355 @@
+CS 480 hw5 report
+Last Name: Luan
+First Name: Songjian
+ONID login: luans@oregonstate.edu
+
+1. Is the following grammars in LL(1)? LR(1)? LR(0)? Justify. Hint1: to justify LL(1), you use FIRST sets, e.g., in (b), FIRST(+ E E) = {+}. A grammar is in LL(1) if for each nonterminal, the FIRST sets for different rules are disjoint. Hint2: to justify LR(0), you need to complete the DFA. then you can exploit the fact that LR(0) is a subset of LR(1).
+a. infix: E -> E + E | E * E | int
+1. E -> E + E
+2. E -> E * E
+3. E -> int
+LR(0): No, since there are shift/reduce conflicts on states 5 and 6 in LR(0) DFA
+	state 0:
+	S -> . E         shift to state 2
+	E -> . E + E     shift to state 2
+	E -> . E * E     shift to state 2
+	E -> . int       shift to state 1
+	state 1:
+	E -> int .       reduce by rule 3
+	state 2:
+	S -> E .         accept
+	E -> E . + E     shift to state 3
+	E -> E . * E     shift to state 4
+	state 3:
+	E -> E + . E     shift to state 5
+	E -> . E + E     
+	E -> . E * E
+	E -> . int       shift to state 1
+	state 4:
+	E -> E * . E     shift to state 6
+	E -> . E + E
+	E -> . E * E
+	E -> . int       shift to state 1
+	state 5:
+	E -> E + E .     reduce by rule 1
+	E -> E . + E     shift to state 3
+	E -> E . * E     shift to state 4
+	state 6:
+	E -> E * E .     reduce by rule 2
+	E -> E . + E     shift to state 3
+	E -> E . * E     shift to state 4
+LR(1): No, since there are shift/reduce conflicts on states 5 and 6 in LR(1) DFA
+	state 0:
+	S -> . E         $
+	E -> . E + E     $/+/*
+	E -> . E * E     $/+/*
+	E -> . int       $/+/*
+
+	E     => shift to state 2
+	int   => shift to state 1
+	state 1:
+	E -> int .       $/+/*
+
+	$/+/* => reduce by rule 3
+	state 2:
+	S -> E .         $
+	E -> E . + E     $/+/*
+	E -> E . * E     $/+/*
+
+	$     => accept
+	+     => shift to state 3
+	*     => shift to state 4
+	state 3:
+	E -> E + . E     $/+/*
+	E -> . E + E     $/+/*
+	E -> . E * E     $/+/*
+	E -> . int       $/+/*
+
+	E     => shift to state 5
+	int   => shift to state 1
+	state 4:
+	E -> E * . E     $/+/*
+	E -> . E + E     $/+/*
+	E -> . E * E     $/+/*
+	E -> . int       $/+/*
+
+	E     => shift to state 6
+	int   => shift to state 1
+	state 5:
+	E -> E + E .     $/+/*
+	E -> E . + E     $/+/*
+	E -> E . * E     $/+/*
+
+	$/+/* => reduce by rule 1
+	+     => shift to state 3
+	*     => shift to state 4
+	state 6:
+	E -> E * E .     $/+/*
+	E -> E . + E     $/+/*
+	E -> E . * E     $/+/*
+
+	$/+/* => reduce by rule 2
+	+     => shift to state 3
+	*     => shift to state 4
+LL(1): No, since this grammar is ambiguous and FIRST(E)*FIRST(T) is {int} not empty.
+FIRST(E + E)                             = {int}
+FIRST(E * E)                             = {int}
+FIRST(int)                               = {int}
+FIRST(E + E) * FIRST(E * E) * FIRST(int) = {int}
+FOLLOW(E)                                = {+, *, $}
+b. Polish: E -> + E E | * E E | int
+1. E -> + E E
+2. E -> * E E
+3. E -> int
+LR(0): Yes, since there is anywhere showing shift/reduce conflict.
+	state 0:
+	S -> . E         shift to state 2
+	E -> . + E E     shift to state 3
+	E -> . * E E     shift to state 4
+	E -> . int       shift to state 1
+	state 1:
+	E -> int .       reduce by rule 3
+	state 2:
+	S -> E .         accept
+	state 3:
+	E -> + . E E     shift to state 5
+	state 4:
+	E -> * . E E     shift to state 6
+	state 5:
+	E -> + E . E     shift to state 7
+	E -> . + E E     shift to state 3
+	E -> . * E E     shift to state 4
+	E -> . int       shift to state 1
+	state 6:
+	E -> * E . E     shift to state 8
+	E -> . + E E     shift to state 3
+	E -> . * E E     shift to state 4
+	E -> . int       shift to state 1
+	state 7:
+	E -> + E E .     reduce by rule 1
+	state 8:
+	E -> * E E .     reduce by rule 2
+LR(1): Yes, since there is anywhere showing shift/reduce conflict.
+	state 0:
+	S -> . E         $
+	E -> . + E E     $/+/*
+	E -> . * E E     $/+/*
+	E -> . int       $/+/*
+
+	E      => shift to state 2
+	$/+/*  => shift to state 3
+	$/+/*  => shift to state 4
+	int    => shift to state 1
+	state 1:
+	E -> int .       $/+/*
+
+	$/+/*  => reduce by rule 3
+	state 2:
+	S -> E .         $
+
+	$      => accept
+	state 3:
+	E -> + . E E     $/+/*
+
+	E      => shift to state 5
+	state 4:
+	E -> * . E E     $/+/*
+
+	E      => shift to state 6
+	state 5:
+	E -> + E . E     $/+/*
+	E -> . + E E     $/+/* 
+	E -> . * E E     $/+/*
+	E -> . int       $/+/*
+
+	E      => shift to state 7
+	$/+/*  => shift to state 3
+	$/+/*  => shift to state 4
+	int    => shift to state 1
+	state 6:
+	E -> * E . E     $/+/*
+	E -> . + E E     $/+/*
+	E -> . * E E     $/+/*
+	E -> . int       $/+/*
+
+	E      => shift to state 8
+	$/+/*  => shift to state 3
+	$/+/*  => shift to state 4
+	int    => shift to state 1
+	state 7:
+	E -> + E E .     $/+/*
+
+	$/+/*  => reduce by rule 3
+	state 8:
+	E -> * E E .     $/+/*
+
+	$/+/*  => reduce by rule 2
+LL(1): Yes, since this grammar is unambiguous and it is right-recursive.
+FIRST(+ E E)                             = {+}
+FIRST(* E E)                             = {*}
+FIRST(int)                               = {int}
+FIRST(+ E E) * FIRST(* E E) * FIRST(int) = empty
+FOLLOW(E)                                = {+, *, int, $}
+c. reverse-Polish: E -> E E + | E E * | int
+1. E -> E E +
+2. E -> E E *
+3. E -> int
+LR(0): Yes, since there is anywhere showing shift/reduce conflict.
+	state 0:
+	S -> . E         shift to state 2
+	E -> . E E +     shift to state 2
+	E -> . E E *     shift to state 2
+	E -> . int       shift to state 1
+	state 1:
+	E -> int .       reduce by rule 3
+	state 2:
+	S -> E .         accept
+	E -> E . E +     shift to state 3
+	E -> E . E *     shift to state 3
+	state 3:
+	E -> E E . +     shift to state 5
+	E -> E E . *     shift to state 6
+	E -> . E E +     shift to state 4
+	E -> . E E *     shift to state 4
+	E -> . int       shift to state 1
+	state 4:
+	E -> E . E +     shift to state 7
+	E -> E . E *     shift to state 7
+	E -> . E E +     shift to state 7
+	E -> . E E *     shift to state 7
+	state 5:
+	E -> E E + .     reduce by rule 1
+	state 6:
+	E -> E E * .     reduce by rule 2
+	state 7:
+	E -> E E . +     shift to state 5
+	E -> E E . *     shift to state 6
+	E -> E . E +     shift to state 7
+	E -> E . E *     shift to state 7
+	E -> . E E +     shift to state 7
+	E -> . E E *     shift to state 7
+	E -> . int       shift to state 1
+LR(1): Yes, since there is anywhere showing shift/reduce conflict.
+	state 0:
+	S -> . E         $ 
+	E -> . E E +     $/+/*
+	E -> . E E *     $/+/*
+	E -> . int       $/+/* 
+
+	E      => shift to state 2
+	int    => shift to state 1
+	state 1:
+	E -> int .       $/+/*
+
+	$/+/*  => reduce by rule 3 
+	state 2:
+	S -> E .         $
+	E -> E . E +     $/+/*
+	E -> E . E *     $/+/*
+
+	$      => accept
+	E      => shift to state 3
+	state 3:
+	E -> E E . +     $/+/* 
+	E -> E E . *     $/+/* 
+	E -> . E E +     $/+/* 
+	E -> . E E *     $/+/* 
+	E -> . int       $/+/* 
+
+	$/+/*  => shift to state 5
+	$/+/*  => shift to state 6
+	E      => shift to state 4
+	int    => shift to state 1
+	state 4:
+	E -> E . E +     $/+/*
+	E -> E . E *     $/+/*
+	E -> . E E +     $/+/*
+	E -> . E E *     $/+/*
+
+	E      => shift to state 7
+	state 5:
+	E -> E E + .     $/+/*
+
+	$/+/*  => reduce by rule 1
+	state 6:
+	E -> E E * .     $/+/*
+
+	$/+/*  => reduce by rule 2
+	state 7:
+	E -> E E . +     $/+/*
+	E -> E E . *     $/+/*
+	E -> E . E +     $/+/*
+	E -> E . E *     $/+/*
+	E -> . E E +     $/+/*
+	E -> . E E *     $/+/*
+	E -> . int       $/+/*
+
+	$/+/*  => shift to state 5
+	$/+/*  => shift to state 6
+	E      => shift to state 7
+	int    => shift to state 1
+LL(1): No, althought this grammar is unambiguous, it isn't right recursive and the intersection of
+first sets of E E + and E E * is {int}, not empty.
+FIRST(E E +)                             = {int}
+FIRST(E E *)                             = {int}
+FIRST(int)                               = {int}
+FIRST(E E +) * FIRST(E E *) * FIRST(int) = {int}
+FOLLOW(E)                                = {+, *, int, $}
+
+2. Why we do not require *all* rules have disjoint FIRST sets for LL(1)? Give an example LL(1) grammar to demonstrate this.
+a. LL(1) grammar needs unambiguity.
+b. LL(1) grammar permits right recursion.
+c. One of disjoint items can derive epsilon and FOLLOW sets of the last disjoint are epsilon. 
+
+S -> T S | epsilon
+T -> x
+FIRST(S)             = {x, epsilon}
+FOLLOW(S)            = {epsilon, $}
+FIRST(S) * FOLLOW(S) = {epsilon}
+
+3. Is there any LL(0) grammar? If so give an example.
+
+I think there is not such a LL(0). Since all (0) parsing rule is no lookahead, there is no difference between LR(0) and LL(0).
+
+4. For the following P_0.95 grammar similar to the one from Midterm 1:
+
+	 module : stmt+
+	 stmt : (small_stmt | while_stmt) NEWLINE
+	 small_stmt : assign_stmt | iadd_stmt | print_stmt
+	 assign_stmt : name "=" decint
+	 iadd_stmt : name "+=" decint
+	 print_stmt : "print" name
+	 while_stmt : "while" name "<" decint ":" suite
+	 suite : NEWLINE INDENT small_stmt+ DEDENT
+	 
+a. Why it is not in LL(1)?
+
+FIRST(assign_stmt)                    = {name}
+FIRST(iadd_stmt)                      = {name}
+FIRST(assign_stmt) * FIRST(iadd_stmt) = {name}
+
+b. Transform it to LL(1). Hint: you need two surgeries: Extract shared left parts between assign_stmt and iadd stmt. Deal with the rule "stmt+" and "small_stmt+". Here you need epsilon. See examples on slides.
+
+module      : stmt+
+stmt+       : stmt (epsilon | stmt+)
+stmt        : (small_stmt+ | while_stmt) NEWLINE
+small_stmt+ : small_stmt (epsilon | small_stmt+)
+small_stmt  : assign_stmt | print_stmt
+assign_stmt : name assigns
+assigns     : ("=" | "+=") decint
+print_stmt  : "print" name
+while_stmt  : "while" name "<" decint ":" suite
+suite       : NEWLINE INDENT small_stmt+ DEDENT
+
+c. Write a recursive descent parser for the transformed grammar, and write the syntax-directed translation code to translate it to C. Hint: I'll post an example for the P_0 grammar.
+
+	Here's how we grade (same as HW1-3):
+		cat test.py | python hw5.py > test.c
+		clang test.c
+		./a.out > test.out1
+		python test.py > test.out2
+		diff test.out1 test.out2       
+	
+5. Extra
+
+I have implements binop, print multiple items.

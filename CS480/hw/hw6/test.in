@@ -1,0 +1,14 @@
+a = 0
+b = 0
+while a < 33:
+    a += 1
+    b += 10
+    print a, 1, b, 2, c, 3
+
+    while c > 333:
+        c += 100
+        print c
+
+    while c > 333:
+        c += 100
+        print c

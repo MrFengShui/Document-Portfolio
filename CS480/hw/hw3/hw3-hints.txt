@@ -1,0 +1,111 @@
+HW3 Hints and Extra Resources
+
+Note: Due to the difficulty of HW3, we are releaseing these hints and extra resources,
+which will hopefully dramatically reduce the amount of time you need to spend on it.
+
+1. HW3 submission deadline is further extended to Tuesday 11am; 
+   Late submission by Wednesday 11am (if you haven't used your late quota).
+   No further extensions will be granted.
+
+   Solutions will be discussed on Wednesday's class, and will be covered in Midterm 1 (Friday).
+
+2. PLY is already installed on ENGR machines, but you can also just download the code 
+   from github and put the "ply" dir under your HW3 dir.
+
+3. We are providing a complete solution to a much larger grammar, P_1.5,
+   which contains NEWLINE, INDENT, DEDENT, so you don't need to worry about them:
+
+   module : stmt+
+   stmt : (if_stmt | print_stmt) NEWLINE
+   print_stmt : "print" expr             
+   if_stmt : "if" name ":" suite
+   suite : NEWLINE INDENT stmtlist DEDENT
+   expr : decint
+   name : "True" | "False"
+
+   To simplify the code for you, we wrapped all lexing code inside MyLexer class.
+   (you can do the same for the parsing part, but no need to do so).
+
+   See hw3_p1.5james.py; you do not need to base your code on it, but it should
+   save you a huge amount of time unless you really want to start with the bare hw3.py.
+
+
+4. It is highly recommended that you actually make yacc parse the following P_3 grammar
+   which is a lot simpler but larger than P_2 (since it accepts more strings), but 
+   our testcases will still be within P_2: 
+
+      The only difference in P_3 vs. P_2 is the merging of int_expr with bool_expr, 
+      and int_name with bool_name, since there is no way to detect type during parsing.   
+      In other words, there are only "expr" and "name".
+
+   You do NOT need to change anything in the translation part. 
+   Just use your HW2 solution (if it passes all cases) or one of ours.
+   
+   Later in HW5 we will translate P_3 by doing some non-trivial type analysis.
+
+
+5. For precedence rules, you can probably use something like the following:
+
+   precedence = (
+    ('nonassoc', 'FOR'),
+    ('nonassoc', 'PRINT'),
+    ('right', 'ELSE', 'IF'),
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'EQ', 'GT', 'LT', 'GE', 'LE', 'NEQ1', 'NEQ2'),
+    ('left', 'PLUS'),
+    ('nonassoc', 'SUB', 'NOT')
+    )
+
+   There are many other correct answers; you do not need to use exactly these. 
+   
+   Setting precedence rules will reduce and eliminate shift/reduce or reduce/reduce conflicts.
+
+   Try this example:
+
+   >>> from ast import *
+   >>> dump(parse("1 if True else 2 if True else 3"))
+   "Module(body=[Expr(value=IfExp(test=Name(id='True', ctx=Load()), body=Num(n=1), orelse=IfExp(test=Name(id='True', ctx=Load()), body=Num(n=2), orelse=Num(n=3))))])"
+
+   This shows IfExp in Python is right-associative, i.e., "1 if True else 2 if True else 3" 
+   means "1 if True else (2 if True else 3)", rather than "(1 if True else 2) if True else 3".
+
+   Your code should therefore translate it to C as something like this:
+
+   (true ? 1 : (true ? 2 : 3))
+
+
+   For LR parsing details, see slides.
+
+
+6. To help you understand the parsing process I made the parser run in the debugging mode,
+   and hacked yacc's output format to be more human-readable, e.g.:
+
+State  : 0
+(IF, if)
+Stack  : . (IF, if)
+Action : Shift and goto state 7
+
+State  : 7
+(NAME, True)
+Stack  : IF . (NAME, True)
+Action : Shift and goto state 14
+
+State  : 14
+Defaulted state 14: Reduce using 8
+Stack  : IF NAME . None
+Action : Reduce rule [name -> NAME] with [True] and goto state 13
+Result : Name(id='True', ctx=Load())
+
+State  : 13
+(COLON, :)
+Stack  : IF name . (COLON, :)
+Action : Shift and goto state 15
+
+...
+
+   
+   You should also take a look at parser.out for the LR table which lists all the states.
+
+
+We hope that you find these resources helpful.
