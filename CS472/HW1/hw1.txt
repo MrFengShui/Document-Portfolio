@@ -1,0 +1,38 @@
+NAME: LUAN SONGJIAN
+ONID: luans@oregonstate.edu
+CLASS: CS472
+DATE: 2016-10-10
+
+1. Describe the difference between architecture and organization
+
+Computer Architecture deals with giving operational attributes of the computer or Processor to be specific. It deals with physical memory, ISA of the processor, the number of bits used to represent the data types, Input Output mechanism and technique for addressing memories. 
+
+Computer Organization is realization of what is specified by the computer architecture. It deals with how operational attributes are linked together to meet the requirements specified by computer architecture. Some organizational attributes are hardware details, control signals, peripherals.
+
+2. Describe the concept of endianness. What common platforms use what endianness?
+
+Endianness is the order of the bytes that compose a digital word in computer memory. It also describes the order of byte transmission over a digital link.
+Big Endianness: zSeries, AIX, iSeries, HP-UX, SINIX, Sun Solaris(on SPARC processors), Linux(zSeries), NonStop Kernel, OVMS Alpha, Open VMS VAX, Tru64 Unix
+Little Endianness: Windows, Sun Solaris(on INTEL processors), Linux (Intel)
+
+3. Give the IEEE 754 floating point format for both single and double precision.
+
++-------------------+--------+-------------+------------+-------------------------------------+
+|                   |  Sign  |   Exponent  |  Fraction  |            Formula                  |
++-------------------+--------+-------------+------------+-------------------------------------+
+| Single  Precision | 1 [31] |  8 [30-23]  |  23 [22-0] | (-1)^{s}*(1+fraction)*2^{exp_bias}  |
++-------------------+--------+-------------+------------+-------------------------------------+
+| Double Precision  | 1 [63] |  11 [62-52] |  52 [51-0] |   (-1)^{s}*fraction*2^{exp_bias}    |
++-------------------+--------+-------------+------------+-------------------------------------+
+
+4. Describe the concept of the memory hierarchy. What levels of the hierarchy are present on flip.engr.oregonstate.edu?
+
+In computer architecture the memory hierarchy is a concept used to discuss performance issues in computer architectural design, algorithm predictions, and lower level programming constructs involving locality of reference. When I lookup"cpuinfo" and "meminfo", it shows the result: 
+L1: 32KB
+L2: 256KB
+L3: 12288KB
+MEM: 9882468KB
+
+5. What streaming SIMD instruction levels are present on flip.engr.oregonstate.edu?
+
+SSE, SSE2, SSSE 3, SSE4.1, SSE4.2

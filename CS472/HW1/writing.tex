@@ -1,0 +1,60 @@
+\documentclass[letterpaper,10pt]{article}
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+\pagestyle{empty}
+\usepackage{color}
+
+\def\name{LUAN SONGJIAN}
+\def\class{CS472}
+\def\term{Fall2016}
+
+\begin{document}
+\noindent NAME: \name
+\\
+\noindent CLASS: \class
+\\
+\noindent DATE: 2016-10-11
+\begin{enumerate}
+\item Describe the difference between architecture and organization
+\par
+\noindent Computer Architecture deals with giving operational attributes of the computer or Processor to be specific. It deals with physical memory, ISA of the processor, the number of bits used to represent the data types, Input Output mechanism and technique for addressing memories. 
+\par
+\noindent Computer Organization is realization of what is specified by the computer architecture. It deals with how operational attributes are linked together to meet the requirements specified by computer architecture. Some organizational attributes are hardware details, control signals, peripherals.
+
+\item Describe the concept of endianness. What common platforms use what endianness?
+\par
+\noindent Endianness is the order of the bytes that compose a digital word in computer memory. It also describes the order of byte transmission over a digital link.
+\\
+\noindent Big Endianness: zSeries, AIX, iSeries, HP-UX, SINIX, Sun Solaris(on SPARC processors), Linux(zSeries), NonStop Kernel, OVMS Alpha, Open VMS VAX, Tru64 Unix
+\\
+\noindent Little Endianness: Windows, Sun Solaris(on INTEL processors), Linux (Intel)
+
+\item Give the IEEE 754 floating point format for both single and double precision.
+\par
+\begin{tabular}{| l | l | l | l | l |}
+\hline
+                 & Sign  &  Exponent & Fraction & Formula \\
+\hline
+Single Precision & 1[31] &  8[30-23] & 23[22-0] & $(-1)^{s}\times(1+fraction)\times2^{exp\_bias}$\\
+\hline
+Double Precision & 1[63] & 11[62-52] & 52[51-0] & $(-1)^{s}\times fraction\times2^{exp\_bias}$\\
+\hline
+\end{tabular}
+
+\item Describe the concept of the memory hierarchy. What levels of the hierarchy are present on flip.engr.oregonstate.edu?
+\par
+\noindent In computer architecture the memory hierarchy is a concept used to discuss performance issues in computer architectural design, algorithm predictions, and lower level programming constructs involving locality of reference. When I lookup"cpuinfo" and "meminfo", it shows the result:
+\\
+\noindent L1: 32KB\\
+\noindent L2: 256KB\\
+\noindent L3: 12288KB\\
+\noindent MEM: 9882468KB
+
+\item What streaming SIMD instruction levels are present on flip.engr.oregonstate.edu?
+\par
+\noindent SSE, SSE2, SSSE 3, SSE4.1, SSE4.2
+\end{enumerate}
+\end{document}
+
+
+

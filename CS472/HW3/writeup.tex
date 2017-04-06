@@ -1,0 +1,73 @@
+\documentclass[letterpaper, onecolumn, 10pt]{IEEEtran}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{color}
+\usepackage{geometry}
+
+\geometry{textheight=8.5in, textwidth=6in}
+\pagestyle{empty}
+
+\def\name{LUAN SONGJIAN}
+\def\class{CS472}
+\def\term{Fall2016}
+
+\begin{document}
+\noindent NAME: \name \\
+\noindent CLASS: \class \\
+\noindent DATE: 2016-11-21 \\
+
+\section*{PART I}
+\begin{enumerate}
+\item For a 4KB page, and a 32 bit address space, calculate the amount of memory needed to store a process's page tables. Assume each entry in the page table requires 10 bytes. Show all calculations.
+\begin{align}
+page\_size & = 4KB = 2^{12}B \\
+page\_count & = 32 - \log_2 (2^{12}) = 20pages
+memory\_amount & = 2^{20}\times10B = 10MB
+\end{align}
+
+\item For a 4KB page, and a 64 bit address space, calculate the amount of memory needed to store a process's page tables. Assume each entry in the page table requires 10 bytes. Show all calculations.
+\begin{align}
+page\_size & = 4KB = 2^{12}B \\
+page\_count & = 64 - \log_2 (2^{12}) = 52pages
+memory\_amount & = 2^{52}\times10B = 40PB
+\end{align}
+
+\item For a 8KB page, and a 32 bit address space, calculate the amount of memory needed to store a process's page tables. Assume each entry in the page table requires 10 bytes. Show all calculations.
+\begin{align}
+page\_size & = 8KB = 2^{13}B \\
+page\_count & = 32 - \log_2 (2^{13}) = 19pages
+memory\_amount & = 2^{19}\times10B = 5MB
+\end{align}
+
+\item For a 8KB page, and a 64 bit address space, calculate the amount of memory needed to store a process's page tables. Assume each entry in the page table requires 10 bytes. Show all calculations.
+\begin{align}
+page\_size & = 4KB = 2^{13}B \\
+page\_count & = 64 - \log_2 (2^{13}) = 51pages
+memory\_amount & = 2^{51}\times10B = 20PB
+\end{align}
+
+\item Describe the concept of pipelining, and why it is useful.
+\\\newline
+A pipeline is a set of data processing elements connected in series. When a data stream goes into in process, the output of this element will be the input of the next one. The elements of a pipeline are often executed in parallel or in time-sliced fashion and some amount of buffer storage is often inserted between elements.
+\\\newline
+Because a series of instructions can run and execute in parallel, the pipeline can speed up execution of those instructions.
+\\
+\item Describe the IA-32e paging structure, in detail.
+\\\newline
+Page Directory Entry (PDE) is the first paging structure (Bits[31:22]). It includes 4KB page table aligned address, ignored, page size, accessed, cache disabled, write through, user\/supervisor, read\/write, and present.
+\\\newline
+Page Table Entry (PTE) is the second paging structure (Bits[21:12]). It includes physical page address, global, dirty, accessed, cache disabled, write through, user\/supervisor, read\/write, and present.
+\\\newline
+Physical Address Entry (PAE) is the page offset within 4KB page frame.\\
+\end{enumerate}
+
+\section*{PART II}
+\subsection*{Memory Optimization}
+\noindent At the beginning, this slides teach methods or aspects for justification, including instruction parallelism, proebsting's law, and Moore's law. Entire slides analyze optimization of memory usage and allocation, particularly cache optimization from different aspects of cache utilization, code and data cache, and prefetching and preloading. Moreover, this slides also introduce policy of memory allocation, explain disadvantage of using aliasing, and teach programers hwo to avoid aliasing. At last, this slides give some tips for avoiding aliasing, such as minimizing use of globals, pointers, and references, using locals as much as possible, avoiding using address of variables, restricting pointers and references, declaring variables close to point and side-effect free functions, and doing pointer expressions.
+
+\subsection*{What Every Programmer Should Know About Memory}
+\noindent This article talks about how CPU and memory work together and how to affect interaction of data between CPU and memory. In general, CPU cores become both faster and more numerous, but it much cost some time to wait for memory access to get data. Moreover, for acceleration of interacting data between CPU and memory, the caches are created by Hardware designers to solve more sophisticated memory handling and acceleration techniques, including commodity hardware, CPU caches, and virtual memory. For helping programmers to understand the importance of structure, memory cost, and caches on CPUs, this article explains the structure of memory subsystems in use on modern commodity hardware, illustrating why CPU caches were developed, how they work, and what programs should do to achieve optimal performance by utilizing them.
+
+\end{document}
