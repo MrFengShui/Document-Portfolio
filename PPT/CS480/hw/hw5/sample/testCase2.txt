@@ -1,0 +1,7 @@
+{
+basic id1,id2;
+if (id1==5) id1=65;
+else id2=75;
+id3=id1+5*6+id2+id1;
+id4=true && false && 3<5;
+}
